@@ -14,6 +14,9 @@ class m200930_124424_create_payments_table extends Migration
     {
         $this->createTable('{{%payments}}', [
             'id' => $this->primaryKey(),
+            'category' => $this->string(),
+            'date' => $this->date(),
+            'user_id' => $this->integer(),
         ]);
     }
 
