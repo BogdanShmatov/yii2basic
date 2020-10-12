@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\ResendVerificationEmailForm;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use app\models\VerifyEmailForm;
 use yii\base\InvalidArgumentException;
@@ -18,7 +20,27 @@ use app\models\EntryForm;
 class SiteController extends Controller
 {
 
-
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['login', 'logout', 'signup'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login', 'signup'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['logout'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
     public function actionIndex()
     {
         return $this->render('index');
