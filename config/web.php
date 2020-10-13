@@ -54,14 +54,12 @@ $config = [
         'db' => $db,
         
         'urlManager' => [
-            'enablePrettyUrl' => false,
+            'enablePrettyUrl' => true,
             'showScriptName' => false,
             'suffix'=>'/',
             'rules' => [
 
-                // '/' => 'site/index',
-//                 ''=>'site/index',
-//                   '<action>'=>'site/<action>',
+                '<action>'=>'site/<action>',
             ],
         ],
         
