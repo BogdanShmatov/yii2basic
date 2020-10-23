@@ -20,6 +20,15 @@ $config = [
 		   'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+//        'response' => [
+//            'formatters' => [
+//                'json' => [
+//                    'class' => 'yii\web\JsonResponseFormatter',
+//                    'prettyPrint' => YII_DEBUG,
+//                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+//                ],
+//            ],
+//        ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

@@ -15,6 +15,8 @@ use app\models\ResetPasswordForm;
 use Yii;
 use yii\web\Controller;
 use app\models\EntryForm;
+use yii\httpclient\Client;
+
 
 
 class SiteController extends Controller
@@ -183,5 +185,15 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+    public function actionGetInformation()
+    {
+        $client = new Client(['baseUrl' => 'http://yiibasicapi',]);
+        $articleResponse = $client->get('users', ['username' => 'legion'])->send();
+        $newUserResponse = $client->get('courses', ['course_name' => 'new course', 'course_author' => 'johndoe@example.com'])->send();
+        echo 'Результаты поиска:<br>';
+        echo $articleResponse->content;
+        echo $newUserResponse->content;
+    }
 
+        
 }
