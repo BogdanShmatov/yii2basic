@@ -10,26 +10,41 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Регистрация';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>Пожалуйста заполните поля для регистрации:</p>
-
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
-
-            <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
-
-            <?= $form->field($model, 'email') ?>
-
-            <?= $form->field($model, 'password')->passwordInput() ?>
-
-            <div class="form-group">
-                <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+<div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('images/bg_1.jpg')">
+    <div class="container">
+        <div class="row align-items-end justify-content-center text-center">
+            <div class="col-lg-7">
+                <h2 class="mb-0">Register</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
             </div>
-
-            <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>
+
+<div class="site-section">
+    <div class="container">
+        <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-12 form-group">
+
+                        <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
+
+                        <?= $form->field($model, 'email') ?>
+
+                        <?= $form->field($model, 'password')->passwordInput() ?>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary btn-lg px-5', 'name' => 'signup-button']) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php ActiveForm::end(); ?>
+    </div>
+</div>
+

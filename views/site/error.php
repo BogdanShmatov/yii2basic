@@ -9,19 +9,21 @@ use yii\helpers\Html;
 
 $this->title = $name;
 ?>
-<div class="site-error">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('../images/bg_1.jpg')">
+    <div class="container">
+        <div class="row align-items-end justify-content-center text-center">
+            <div class="col-lg-7">
+                <h2 class="mb-0"><?= Html::encode($this->title) ?></h2>
 
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
+                <p><?= nl2br(Html::encode($message)) ?></p>
+                <p>
+                    The above error occurred while the Web server was processing your request.
+                </p>
+                <p>
+                    Please contact us if you think this is a server error. Thank you.
+                </p>
+            </div>
+        </div>
     </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
-
 </div>

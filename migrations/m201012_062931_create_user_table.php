@@ -16,6 +16,8 @@ class m201012_062931_create_user_table extends Migration
             'id' => $this->primaryKey()->notNull(),
             'login' => $this->string()->notNull()->unique(),
             'auth_key' => $this->string()->notNull(),
+            'name' => $this->varchar(255),
+            'last_name' => $this->varchar(255),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string(),
             'email' => $this->string()->unique()->notNull(),

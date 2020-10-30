@@ -69,6 +69,8 @@ $config = [
             'rules' => [
 
                 '<action>'=>'site/<action>',
+                
+
             ],
         ],
         

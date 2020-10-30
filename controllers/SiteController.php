@@ -21,6 +21,17 @@ use yii\httpclient\Client;
 
 class SiteController extends Controller
 {
+    public function init()
+    {
+        parent::init();
+        if (!Yii::$app->user->isGuest) {
+            $this->layout = 'my';
+
+
+        }
+
+
+    }
     public function actions()
     {
         return [
@@ -47,6 +58,7 @@ class SiteController extends Controller
                         'actions' => ['logout'],
                         'roles' => ['@'],
                     ],
+
                 ],
             ],
         ];
@@ -56,6 +68,10 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    public function actionMy()
+    {
+        return $this->render('my');
+    }
 
     public function actionSignup()
     {
@@ -72,13 +88,18 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
+
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+//            return $this->goBack();
+            return $this->render('my');
+
         } else {
             $model->password = '';
 
@@ -185,14 +206,27 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
-    public function actionGetInformation()
+
+    public function actionCourses()
     {
-        $client = new Client(['baseUrl' => 'http://yiibasicapi',]);
-        $articleResponse = $client->get('users', ['username' => 'legion'])->send();
-        $newUserResponse = $client->get('courses', ['course_name' => 'new course', 'course_author' => 'johndoe@example.com'])->send();
-        echo 'Результаты поиска:<br>';
-        echo $articleResponse->content;
-        echo $newUserResponse->content;
+        $client = new Client(['baseUrl' => 'http://appapi',]);
+        $coursesResponse = $client->get('course?expand=cat')
+            ->setFormat(Client::FORMAT_JSON)
+            ->send();
+        $courses = json_decode($coursesResponse->content);
+        return $this->render('courses',['courses'=>$courses]);
+
+    }
+
+    public function actionCategoryes()
+    {
+        $client = new Client(['baseUrl' => 'http://appapi',]);
+        $coursesResponse = $client->get('course?expand=cat')
+            ->setFormat(Client::FORMAT_JSON)
+            ->send();
+        $courses = json_decode($coursesResponse->content);
+        return $this->render('courses',['courses'=>$courses]);
+
     }
 
         
