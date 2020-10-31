@@ -11,7 +11,9 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+$categories = $this->context->categoriesMenu;
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -59,18 +61,18 @@ AppAsset::register($this);
                                 <a href="/" class="nav-link text-left">Home</a>
                             </li>
                             <li class="has-children">
-                                <a href="about.html" class="nav-link text-left">Categoryes</a>
+                                <a href="/categories/" class="nav-link text-left">Categories</a>
                                 <ul class="dropdown">
-                                    <li><a href="teachers.html">Web-Dev</a></li>
-                                    <li><a href="about.html">Game-Dev</a></li>
+
+                                    <?php foreach($categories as $category): ?>
+                                    <li><a href="teachers.html"><?php echo $category->cat_name?></a></li>
+                                    <?php endforeach; ?>
                                 </ul>
                             </li>
                             <li>
                                 <a href="/courses/" class="nav-link text-left">All Courses</a>
                             </li>
-                            <li>
-                                <a href="/contact/" class="nav-link text-left">Contact</a>
-                            </li>
+
                         </ul>                                                                                                                                                                                                                                                                                          </ul>
                     </nav>
                 </div>

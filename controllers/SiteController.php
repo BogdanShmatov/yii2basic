@@ -21,15 +21,17 @@ use yii\httpclient\Client;
 
 class SiteController extends Controller
 {
+    public $categoriesMenu;
+
     public function init()
     {
+
         parent::init();
+
         if (!Yii::$app->user->isGuest) {
             $this->layout = 'my';
-
-
         }
-
+        $this->actionCategories();
 
     }
     public function actions()
@@ -218,16 +220,19 @@ class SiteController extends Controller
 
     }
 
-    public function actionCategoryes()
+    public function actionCategories()
     {
         $client = new Client(['baseUrl' => 'http://appapi',]);
-        $coursesResponse = $client->get('course?expand=cat')
+        $categoriesResponse = $client->get('category')
             ->setFormat(Client::FORMAT_JSON)
             ->send();
-        $courses = json_decode($coursesResponse->content);
-        return $this->render('courses',['courses'=>$courses]);
+        $categories = json_decode($categoriesResponse->content);
+        $this->categoriesMenu = $categories;
+
+        return $this->render('category',['categories'=>$categories]);
 
     }
+
 
         
 }
