@@ -19,7 +19,7 @@ $this->title = 'Category';
             <div class="col-lg-4">
                 <div class="course-1-item">
                     <figure class="thumnail">
-                        <div class="category"><h3><a style="color: white" href="#"><?php echo $category->cat_name?></a></3></div>
+                        <div class="category"><h3><a style="color: white" href="#"><?php echo $category->cat_name?></a></h3></div>
                     </figure>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 <?php
 
+use yii\helpers\Url;
+
 $this->title = 'Courses';
 
 
@@ -26,13 +28,13 @@ $this->title = 'Courses';
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="course-1-item">
                         <figure class="thumnail">
-                        <a href="course-single.html"><img src="../images/course_1.jpg" alt="Image" class="img-fluid"></a>
+                        <a href="<?= Url::toRoute(['view', 'id'=>$course->id]);?>"><img src="<?php echo $course->course_img_url?>" alt="Image" class="img-fluid"></a>
                         <div class="price">$<?php
                             if($course->course_isFree){ ?>
                                 Free
                             <?php } else
                                 echo $course->course_price?></div>
-                        <div class="category"><h3><?php echo $course->course_name?></h3></div>
+                        <div class="category"><h3 ><a style="color: #FFFFFF" href="<?= Url::toRoute(['view', 'id'=>$course->id]);?>"><?php echo $course->course_name?></a></h3></div>
                         </figure>
                         <div class="course-1-content pb-4">
                         <h2><?php echo $course->course_description?></h2>

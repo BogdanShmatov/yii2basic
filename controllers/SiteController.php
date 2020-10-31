@@ -25,12 +25,11 @@ class SiteController extends Controller
 
     public function init()
     {
-
-        parent::init();
-
         if (!Yii::$app->user->isGuest) {
             $this->layout = 'my';
         }
+
+        parent::init();
         $this->actionCategories();
 
     }
@@ -231,6 +230,17 @@ class SiteController extends Controller
 
         return $this->render('category',['categories'=>$categories]);
 
+    }
+
+    public function actionView($id)
+    {
+        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
+        $courseSingleResponse = $client->get($id)
+            ->setFormat(Client::FORMAT_JSON)
+            ->send();
+        $courseSingle = json_decode($courseSingleResponse->content);
+
+        return $this->render('singleCourse',['courseSingle' => $courseSingle]);
     }
 
 
