@@ -29,7 +29,6 @@ $categories = $this->context->categoriesMenu;
 <?php $this->beginBody() ?>
 
 <dv class="site-wrap">
-
     <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
             <div class="site-mobile-menu-close mt-3">
@@ -38,13 +37,10 @@ $categories = $this->context->categoriesMenu;
         </div>
         <div class="site-mobile-menu-body"></div>
     </div>
-
-
     <div class="py-2 bg-light">
         <div class="container">
         </div>
     </div>
-
     <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
 
         <div class="container">
@@ -56,43 +52,57 @@ $categories = $this->context->categoriesMenu;
                 </div>
                 <div class="mr-auto">
                     <nav class="site-navigation position-relative text-right" role="navigation">
-                        <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                            <li class="active">
-                                <a href="/" class="nav-link text-left">Home</a>
-                            </li>
-                            <li class="has-children">
-                                <a href="/categories/" class="nav-link text-left">Categories</a>
-                                <ul class="dropdown">
+                        <?php if (Yii::$app->user->isGuest) { ?>
+                            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                                <li class="active">
+                                    <a href="/" class="nav-link text-left">Home</a>
+                                </li>
+                                <li class="has-children">
+                                    <a href="/categories/" class="nav-link text-left">Categories</a>
+                                    <ul class="dropdown">
+                                        <?php foreach($categories as $category): ?>
+                                            <li><a href="#"><?php echo $category->cat_name?></a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/courses/" class="nav-link text-left">All Courses</a>
+                                </li>
+                            </ul>                                                                                                                                                                                                                                                                                          </ul>
+                        <?php } else { ?>
+                            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                                <li class="active">
+                                    <a href="/my/" class="nav-link text-left">My courses</a>
+                                </li>
+                                <li class="has-children">
+                                    <a href="/courses/" class="nav-link text-left">Store</a>
+                                    <ul class="dropdown">
+                                        <?php foreach($categories as $category): ?>
+                                            <li><a href="teachers.html"><?php echo $category->cat_name?></a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="courses.html" class="nav-link text-left">Purchase history</a>
+                                </li>
+                                <li>
+                                    <a href="/contact/" class="nav-link text-left">Cart</a>
+                                </li>
+                            </ul>
+                        <?php } ?>
 
-                                    <?php foreach($categories as $category): ?>
-                                    <li><a href="teachers.html"><?php echo $category->cat_name?></a></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="/courses/" class="nav-link text-left">All Courses</a>
-                            </li>
-
-                        </ul>                                                                                                                                                                                                                                                                                          </ul>
                     </nav>
                 </div>
                 <div class="col-lg-3 text-right">
-                    <?php
-                    if (Yii::$app->user->isGuest) {?>
+                    <?php if (Yii::$app->user->isGuest) { ?>
                         <a href="/login/" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
                         <a href="/signup/" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
-
-                        <?php
-                    }else {
-                    ?>
-
+                        <?php } else { ?>
                         <a href="login.html" class="small mr-3">
                             <img style="border-radius: 50px; width: 50px; height: 50px;" src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" alt="">
                             <?php echo Yii::$app->user->identity->login ?></a>
                         <a href="/logout/" class="small btn btn-primary px-4 py-2 rounded-0"> Выйти</a>
-                    <?php
-                    }
-                    ?>
+                    <?php } ?>
                     <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
                                 class="icon-menu h3"></span></a>
                 </div>

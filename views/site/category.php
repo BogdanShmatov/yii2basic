@@ -1,9 +1,10 @@
 <?php
 
-/* @var $this yii\web\View */
+
 
 $this->title = 'Category';
-?>   <div></div>
+?>
+<div></div>
 
 <div class="site-section">
     <div class="container">
@@ -24,8 +25,6 @@ $this->title = 'Category';
                 </div>
             </div>
             <?php endforeach; ?>
-
-
         </div>
     </div>
 </div>

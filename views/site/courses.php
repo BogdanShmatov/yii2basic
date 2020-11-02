@@ -18,9 +18,6 @@ $this->title = 'Courses';
         </div>
       </div>
 
-
-
-
     <div class="site-section">
         <div class="container">
             <div class="row">
@@ -37,7 +34,7 @@ $this->title = 'Courses';
                         <div class="category"><h3 ><a style="color: #FFFFFF" href="<?= Url::toRoute(['view', 'id'=>$course->id]);?>"><?php echo $course->course_name?></a></h3></div>
                         </figure>
                         <div class="course-1-content pb-4">
-                        <h2><?php echo $course->course_description?></h2>
+                       <a href="<?= Url::toRoute(['view', 'id'=>$course->id]);?>"> <h2><?php echo $course->course_description?></h2></a>
                         <div class="rating text-center mb-3">
                             <span class="icon-star2 text-warning"></span>
                             <span class="icon-star2 text-warning"></span>
@@ -62,11 +59,6 @@ $this->title = 'Courses';
                     </div>
                 </div>
                 <?php endforeach; ?>
-
-
-
-
-
             </div>
         </div>
     </div>

@@ -25,9 +25,6 @@ class SiteController extends Controller
 
     public function init()
     {
-        if (!Yii::$app->user->isGuest) {
-            $this->layout = 'my';
-        }
 
         parent::init();
         $this->actionCategories();
@@ -211,7 +208,7 @@ class SiteController extends Controller
     public function actionCourses()
     {
         $client = new Client(['baseUrl' => 'http://appapi',]);
-        $coursesResponse = $client->get('course?expand=cat')
+        $coursesResponse = $client->get('course?expand=cat,lessons0')
             ->setFormat(Client::FORMAT_JSON)
             ->send();
         $courses = json_decode($coursesResponse->content);
@@ -235,7 +232,8 @@ class SiteController extends Controller
     public function actionView($id)
     {
         $client = new Client(['baseUrl' => 'http://appapi/course/',]);
-        $courseSingleResponse = $client->get($id)
+        $url = $id.'?expand=lessons0';
+        $courseSingleResponse = $client->get($url)
             ->setFormat(Client::FORMAT_JSON)
             ->send();
         $courseSingle = json_decode($courseSingleResponse->content);

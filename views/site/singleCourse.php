@@ -1,7 +1,8 @@
 <?php
-$this->title = 'Courses';
-?>
 
+$this->title = $courseSingle->course_name;
+
+?>
 
 <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('../images/bg_1.jpg')">
     <div class="container">
@@ -37,7 +38,6 @@ $this->title = 'Courses';
         <div class="row">
             <div class="col-md-6 mb-4">
                 <p>
-
                     <iframe width="580" height="360" src="<?php echo $courseSingle->course_preview?>"
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
@@ -47,14 +47,11 @@ $this->title = 'Courses';
                 <h2 class="section-title-underline mb-5">
                     <span>Course Details</span>
                 </h2>
-
                 <p><strong class="text-black d-block">Author:</strong> <?php echo $courseSingle->course_author?></p>
-                <p class="mb-5"><strong class="text-black d-block">Added:</strong> 8:00 am &mdash; 9:30am</p>
-
+                <p class="mb-5"><strong class="text-black d-block">Added:</strong> <?php echo $courseSingle->date?></p>
                 <p>
                     <a href="#" class="btn btn-primary rounded-0 btn-lg px-5">Enroll</a>
                 </p>
-
             </div>
         </div>
     </div>
@@ -62,97 +59,24 @@ $this->title = 'Courses';
 
 <div class="section-bg style-1" style="background-image: url('../images/hero_1.jpg');">
     <div class="container">
-        <div class="row">
+        <?php if(!$courseSingle->course_isFree) {?>
+            <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
+                <h1>Похоже это платный контент!</h1>
+                <p>После покупки уроки станут доступны.</p>
+                <a href="#" class="btn btn-primary rounded-0 btn-lg px-5">Купить</a>
+            </div>
+        <?php } else {?>
             <div class="row">
-
+                <?php foreach ($courseSingle->lessons0 as $lesson): ?>
                     <div class="col-lg-4">
                         <div class="course-1-item">
                             <figure class="thumnail">
-                                <div class="category"><h3><a style="color: white" href="#">Урок 1</a></h3></div>
+                                <div class="category"><h3><a style="color: white" href="#"><?php echo $lesson->lesson_name?></a></h3></div>
                             </figure>
                         </div>
                     </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 2</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 3</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 1</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 2</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 3</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 1</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 2</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 3</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 1</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 2</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="course-1-item">
-                        <figure class="thumnail">
-                            <div class="category"><h3><a style="color: white" href="#">Урок 3</a></h3></div>
-                        </figure>
-                    </div>
-                </div>
-
-
-
+                <?php endforeach; ?>
             </div>
-        </div>
+        <?php } ?>
     </div>
 </div>
