@@ -1087,3 +1087,30 @@ h1, h2, h3, h4, h5,
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+.lesson{
+  background: #51be78;
+  width: 100%;
+  color: #FFF;
+  padding: 5px;
+  cursor: pointer;
+  border-bottom: #FFF 2px solid;
+}
+.hide {
+  display: none;
+}
+
+.show{
+  display: flex;
+}
+.active-lesson {
+  background-color: #acdfc6;
+}
+
+.card-form input {
+  border:none;
+  border-bottom:solid 1px #52e2b4;
+
+}
+.left {
+  text-align: left;
+}

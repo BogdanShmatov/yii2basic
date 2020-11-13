@@ -1,7 +1,7 @@
 <?php
 
 $this->title = $courseSingle->course_name;
-
+use yii\helpers\Url;
 ?>
 
 <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('../images/bg_1.jpg')">
@@ -15,16 +15,6 @@ $this->title = $courseSingle->course_name;
     </div>
 </div>
 
-
-<div class="custom-breadcrumns border-bottom">
-    <div class="container">
-        <a href="index.html">Home</a>
-        <span class="mx-3 icon-keyboard_arrow_right"></span>
-        <a href="courses.html">Courses</a>
-        <span class="mx-3 icon-keyboard_arrow_right"></span>
-        <span class="current">Courses</span>
-    </div>
-</div>
 
 <div class="site-section">
     <div class="container">
@@ -50,7 +40,17 @@ $this->title = $courseSingle->course_name;
                 <p><strong class="text-black d-block">Author:</strong> <?php echo $courseSingle->course_author?></p>
                 <p class="mb-5"><strong class="text-black d-block">Added:</strong> <?php echo $courseSingle->date?></p>
                 <p>
-                    <a href="#" class="btn btn-primary rounded-0 btn-lg px-5">Enroll</a>
+                    <?php
+                    if($courseSingle->course_isFree){
+
+                    ?>
+                <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a></p>
+
+                <?php  }else{
+                    ?>
+                    <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">Купить</a></p>
+                <?php  }
+                ?>
                 </p>
             </div>
         </div>
@@ -63,20 +63,63 @@ $this->title = $courseSingle->course_name;
             <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
                 <h1>Похоже это платный контент!</h1>
                 <p>После покупки уроки станут доступны.</p>
-                <a href="#" class="btn btn-primary rounded-0 btn-lg px-5">Купить</a>
+                <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">Купить</a>
             </div>
         <?php } else {?>
             <div class="row">
-                <?php foreach ($courseSingle->lessons0 as $lesson): ?>
-                    <div class="col-lg-4">
-                        <div class="course-1-item">
-                            <figure class="thumnail">
-                                <div class="category"><h3><a style="color: white" href="#"><?php echo $lesson->lesson_name?></a></h3></div>
-                            </figure>
-                        </div>
+                    <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
+                        <h1>Похоже это бесплатный контент!</h1>
+                        <p>Все уроки доступны.</p>
+                        <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a>
                     </div>
-                <?php endforeach; ?>
             </div>
         <?php } ?>
     </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-9 col-md-6 mb-4">
+                    <?php for ($i = 0, $size = count($courseSingle->lessons0); $i < $size; $i++) {
+                        $lesson = $courseSingle->lessons0;?>
+                       <div class="video-container" style="width: 100%; height: 70vh; background-color: #51be78">
+                           <iframe width="100%" height="100%" src=" <?php echo $lesson[$i]->lesson_url ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                       </div>
+                    <?php } ?>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div style="width: 100%; height: 70vh; box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1); color: #000; overflow: auto ">
+                    <h4 style="padding: 5px;">Уроки:</h4>
+                        <div class="lessons">
+                    <?php for ($i = 0, $size = count($courseSingle->lessons0); $i < $size; $i++) {
+                        $lesson = $courseSingle->lessons0;
+
+                            if($courseSingle->course_isFree == 0) {
+
+                                if($i < 2) {
+                            ?>
+                        <div class="lesson">
+                            <input type="checkbox" >
+                           <?php echo $lesson[$i]->lesson_name ?>
+                        </div>
+                    <?php } else if($i > 2) { ?>
+                                <div class="lesson" style=" pointer-events: none; background-color: grey">
+                                    <?php echo $lesson[$i]->lesson_name ?>
+                                   <span class="icon-lock"></span>
+                                </div>
+                    <?php }}
+                            else {  ?>
+                                <div class="lesson">
+                                    <input type="checkbox" >
+                                    <?php echo $lesson[$i]->lesson_name ?>
+                                </div>
+                    <?php  }} ?>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </div>

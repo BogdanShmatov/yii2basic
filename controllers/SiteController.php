@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\ResendVerificationEmailForm;
+use app\models\User;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -12,6 +13,7 @@ use app\models\SignupForm;
 use app\models\LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
+use app\models\Card;
 use Yii;
 use yii\web\Controller;
 use app\models\EntryForm;
@@ -75,7 +77,7 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash('success', 'Спасибо за регистрацию! Пожалуйста проверь свой почтовый ящик, для верификации.');
             return $this->goHome();
         }
 
@@ -120,11 +122,11 @@ class SiteController extends Controller
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('success', 'Проверьте свою электронную почту для получения дальнейших инструкций.');
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', 'К сожалению, мы не можем сбросить пароль для указанного адреса электронной почты.');
             }
         }
 
@@ -149,7 +151,7 @@ class SiteController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
+            Yii::$app->session->setFlash('success', 'Новый пароль сохранен.');
 
             return $this->goHome();
         }
@@ -175,12 +177,12 @@ class SiteController extends Controller
         }
         if ($user = $model->verifyEmail()) {
             if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
+                Yii::$app->session->setFlash('success', 'Ваш email был успешно подтвержден!');
                 return $this->goHome();
             }
         }
 
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+        Yii::$app->session->setFlash('error', 'К сожалению, мы не можем подтвердить вашу учетную запись с помощью предоставленного токена.');
         return $this->goHome();
     }
 
@@ -194,10 +196,10 @@ class SiteController extends Controller
         $model = new ResendVerificationEmailForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('success', 'Проверьте свою электронную почту для получения дальнейших инструкций.');
                 return $this->goHome();
             }
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to resend verification email for the provided email address.');
+            Yii::$app->session->setFlash('error', 'К сожалению, мы не можем повторно отправить письмо с подтверждением на указанный адрес электронной почты.');
         }
 
         return $this->render('resendVerificationEmail', [
@@ -241,6 +243,46 @@ class SiteController extends Controller
         return $this->render('singleCourse',['courseSingle' => $courseSingle]);
     }
 
+    public function actionBuyCourse($id)
+    {
+        if (Yii::$app->user->isGuest) {
+
+            return $this->redirect(['login']);
+
+        }
+
+        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
+        $coursesResponse = $client->get($id)
+            ->setFormat(Client::FORMAT_JSON)
+            ->send();
+        $courses = json_decode($coursesResponse->content);
+
+        return $this->render('buyCourse',['course' => $courses]);
+
+    }
+
+    public function actionCard($id)
+    {
+        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
+        $coursesResponse = $client->get($id)
+            ->setFormat(Client::FORMAT_JSON)
+            ->send();
+        $courses = json_decode($coursesResponse->content);
+
+        $model = new Card();
+        return $this->render('card',['course' => $courses, 'model' => $model]);
+    }
+
+    public function actionBalance($id, $user_id)
+    {
+        $user = User::findIdentity($user_id);
+        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
+        $coursesResponse = $client->get($id)
+            ->setFormat(Client::FORMAT_JSON)
+            ->send();
+        $courses = json_decode($coursesResponse->content);
+        return $this->render('balance',['course' => $courses, 'user' => $user]);
+    }
 
         
 }

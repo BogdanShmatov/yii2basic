@@ -53,6 +53,7 @@ class AppAsset extends AssetBundle
         'js/jquery.sticky.js',
         'js/jquery.mb.YTPlayer.min.js',
         'js/main.js',
+        'js/videohide.js',
 
     ];
     public $depends = [
