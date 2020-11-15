@@ -20,7 +20,7 @@ use yii\bootstrap\ActiveForm;
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <?= $form->field($model, 'cardNumber')
-                                    ->textInput(['maxlength' => 20, 'placeholder'=>'**** **** **** ****','autofocus' => true])
+                                    ->textInput(['maxlength' => 16, 'placeholder'=>'**** **** **** ****','autofocus' => true])
                                     ->label('Номер карты') ?>
                             </div>
                         </div>

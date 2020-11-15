@@ -24,7 +24,7 @@ class Card extends Model
             [['cardNumber', 'expMonth', 'expYear', 'cvc', 'cardName'], 'required'],
             [['cardNumber', 'expMonth', 'expYear', 'cvc', 'cardName'], 'default', 'value' => 0],
 
-            ['cardNumber', 'number'],
+            ['cardNumber', 'number', 'max' => 16],
 
             ['expMonth', 'number', 'min' => 1, 'max' => 12],
 
