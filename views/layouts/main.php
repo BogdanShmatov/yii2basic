@@ -3,15 +3,14 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
+
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+
 use app\assets\AppAsset;
+use yii\helpers\Url;
 
 AppAsset::register($this);
-$categories = $this->context->categoriesMenu;
+//$categories = $this->context->categoriesMenu;
 ?>
 
 <?php $this->beginPage() ?>
@@ -47,7 +46,7 @@ $categories = $this->context->categoriesMenu;
             <div class="d-flex align-items-center">
                 <div class="site-logo">
                     <a href="/" class="d-block">
-                        <img src="../images/logo.jpg" alt="Image" class="img-fluid">
+                        <img src="/images/logo.jpg" alt="Image" class="img-fluid">
                     </a>
                 </div>
                 <div class="mr-auto">
@@ -58,36 +57,30 @@ $categories = $this->context->categoriesMenu;
                                     <a href="/" class="nav-link text-left">Home</a>
                                 </li>
                                 <li class="has-children">
-                                    <a href="/categories/" class="nav-link text-left">Categories</a>
+                                    <a href="<?= Url::toRoute(['course/get-categories']);?>" class="nav-link text-left">Categories</a>
                                     <ul class="dropdown">
-                                        <?php foreach($categories as $category): ?>
-                                            <li><a href="#"><?php echo $category->cat_name?></a></li>
-                                        <?php endforeach; ?>
+                                        <li><a href="#">Категории</a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="/courses/" class="nav-link text-left">All Courses</a>
+                                    <a href="<?= Url::toRoute(['course/get-courses']);?>" class="nav-link text-left">All Courses</a>
                                 </li>
                             </ul>                                                                                                                                                                                                                                                                                          </ul>
                         <?php } else { ?>
                             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                                 <li class="active">
-                                    <a href="/my/" class="nav-link text-left">My courses</a>
+                                    <a href="<?= Url::toRoute(['my']);?>" class="nav-link text-left">My courses</a>
                                 </li>
                                 <li class="has-children">
-                                    <a href="/courses/" class="nav-link text-left">Store</a>
+                                    <a href="<?= Url::toRoute(['course/get-courses']);?>" class="nav-link text-left">Store</a>
                                     <ul class="dropdown">
-                                        <?php foreach($categories as $category): ?>
-                                            <li><a href="teachers.html"><?php echo $category->cat_name?></a></li>
-                                        <?php endforeach; ?>
+                                        <li><a href="#">Категории</a></li>
                                     </ul>
                                 </li>
                                 <li>
                                     <a href="courses.html" class="nav-link text-left">Purchase history</a>
                                 </li>
-                                <li>
-                                    <a href="/contact/" class="nav-link text-left">Cart</a>
-                                </li>
+
                             </ul>
                         <?php } ?>
 
@@ -95,13 +88,13 @@ $categories = $this->context->categoriesMenu;
                 </div>
                 <div class="col-lg-3 text-right">
                     <?php if (Yii::$app->user->isGuest) { ?>
-                        <a href="/login/" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
-                        <a href="/signup/" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+                        <a href="<?= Url::toRoute(['logout']);?>" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
+                        <a href="<?= Url::toRoute(['signup']);?>" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
                         <?php } else { ?>
                         <a href="login.html" class="small mr-3">
                             <img style="border-radius: 50px; width: 50px; height: 50px;" src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" alt="">
                             <?php echo Yii::$app->user->identity->login ?></a>
-                        <a href="/logout/" class="small btn btn-primary px-4 py-2 rounded-0"> Выйти</a>
+                        <a href="<?= Url::toRoute(['logout']);?>" class="small btn btn-primary px-4 py-2 rounded-0"> Выйти</a>
                     <?php } ?>
                     <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
                                 class="icon-menu h3"></span></a>
@@ -120,7 +113,7 @@ $categories = $this->context->categoriesMenu;
             <div class="col-12">
 
                 <div class="copyright">
-                    <p class="mb-4"><img src="../images/logo.png" alt="Image" class="img-fluid"></p>
+                    <p class="mb-4"><img src="/images/logo.png" alt="Image" class="img-fluid"></p>
                     <p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         Copyright &copy; My  <?= date('Y') ?> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>

@@ -1,6 +1,6 @@
 <?php
 
-$this->title = $courseSingle->course_name;
+$this->title = $courseSingle['course_name'];
 use yii\helpers\Url;
 ?>
 
@@ -8,8 +8,8 @@ use yii\helpers\Url;
     <div class="container">
         <div class="row align-items-end">
             <div class="col-lg-7">
-                <h2 class="mb-0"><?php echo $courseSingle->course_name?></h2>
-                <p><?php echo $courseSingle->course_description?></p>
+                <h2 class="mb-0"><?php echo $courseSingle['course_name']?></h2>
+                <p><?php echo $courseSingle['course_description']?></p>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@ use yii\helpers\Url;
         <div class="row">
             <div class="col-md-6 mb-4">
                 <p>
-                    <iframe width="580" height="360" src="<?php echo $courseSingle->course_preview?>"
+                    <iframe width="580" height="360" src="<?php echo $courseSingle['course_preview']?>"
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
                 </p>
@@ -37,18 +37,18 @@ use yii\helpers\Url;
                 <h2 class="section-title-underline mb-5">
                     <span>Course Details</span>
                 </h2>
-                <p><strong class="text-black d-block">Author:</strong> <?php echo $courseSingle->course_author?></p>
-                <p class="mb-5"><strong class="text-black d-block">Added:</strong> <?php echo $courseSingle->date?></p>
+                <p><strong class="text-black d-block">Author:</strong> <?php echo $courseSingle['course_author']?></p>
+                <p class="mb-5"><strong class="text-black d-block">Added:</strong> <?php echo $courseSingle['date']?></p>
                 <p>
                     <?php
-                    if($courseSingle->course_isFree){
+                    if($courseSingle['course_isFree']){
 
                     ?>
-                <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a></p>
+                <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a></p>
 
                 <?php  }else{
                     ?>
-                    <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">Купить</a></p>
+                    <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">Купить</a></p>
                 <?php  }
                 ?>
                 </p>
@@ -59,18 +59,18 @@ use yii\helpers\Url;
 
 <div class="section-bg style-1" style="background-image: url('../images/hero_1.jpg');">
     <div class="container">
-        <?php if(!$courseSingle->course_isFree) {?>
+        <?php if(!$courseSingle['course_isFree']) {?>
             <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
                 <h1>Похоже это платный контент!</h1>
                 <p>После покупки уроки станут доступны.</p>
-                <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">Купить</a>
+                <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">Купить</a>
             </div>
         <?php } else {?>
             <div class="row">
                     <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
                         <h1>Похоже это бесплатный контент!</h1>
                         <p>Все уроки доступны.</p>
-                        <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle->id]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a>
+                        <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a>
                     </div>
             </div>
         <?php } ?>
@@ -81,10 +81,11 @@ use yii\helpers\Url;
     <div class="container">
         <div class="row ">
             <div class="col-lg-9 col-md-6 mb-4">
-                    <?php for ($i = 0, $size = count($courseSingle->lessons0); $i < $size; $i++) {
-                        $lesson = $courseSingle->lessons0;?>
+                    <?php for ($i = 0, $size = count($courseSingle['lessons0']); $i < $size; $i++) {
+
+                        $lesson = $courseSingle['lessons0'];?>
                        <div class="video-container" style="width: 100%; height: 70vh; background-color: #51be78">
-                           <iframe width="100%" height="100%" src=" <?php echo $lesson[$i]->lesson_url ?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                           <iframe width="100%" height="100%" src=" <?php echo $lesson[$i]['lesson_url']?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                        </div>
                     <?php } ?>
             </div>
@@ -92,27 +93,27 @@ use yii\helpers\Url;
                 <div style="width: 100%; height: 70vh; box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1); color: #000; overflow: auto ">
                     <h4 style="padding: 5px;">Уроки:</h4>
                         <div class="lessons">
-                    <?php for ($i = 0, $size = count($courseSingle->lessons0); $i < $size; $i++) {
-                        $lesson = $courseSingle->lessons0;
+                    <?php for ($i = 0, $size = count($courseSingle['lessons0']); $i < $size; $i++) {
+                        $lesson = $courseSingle['lessons0'];
 
-                            if($courseSingle->course_isFree == 0) {
+                            if($courseSingle['course_isFree'] == 0) {
 
                                 if($i < 2) {
                             ?>
                         <div class="lesson">
                             <input type="checkbox" >
-                           <?php echo $lesson[$i]->lesson_name ?>
+                           <?php echo $lesson[$i]['lesson_name'] ?>
                         </div>
                     <?php } else if($i > 2) { ?>
                                 <div class="lesson" style=" pointer-events: none; background-color: grey">
-                                    <?php echo $lesson[$i]->lesson_name ?>
+                                    <?php echo $lesson[$i]['lesson_name'] ?>
                                    <span class="icon-lock"></span>
                                 </div>
                     <?php }}
                             else {  ?>
                                 <div class="lesson">
                                     <input type="checkbox" >
-                                    <?php echo $lesson[$i]->lesson_name ?>
+                                    <?php echo $lesson[$i]['lesson_name'] ?>
                                 </div>
                     <?php  }} ?>
                         </div>

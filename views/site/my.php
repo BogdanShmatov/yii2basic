@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Page';
+$this->title = 'My courses';
 ?>   <div></div>
 
 <div class="site-section">
@@ -15,12 +15,13 @@ $this->title = 'My Page';
             </div>
         </div>
         <div class="row">
+            <?php foreach ($courses as $course): ?>
             <div class="col-lg-4">
                 <div class="course-1-item">
                     <figure class="thumnail">
-                        <a href="course-single.html"><img src="../images/course_1.jpg" alt="Image" class="img-fluid"></a>
+                        <a href="course-single.html"><img src="<?php echo $course['course_img_url'] ?>" alt="Image" class="img-fluid"></a>
                         <div class="price"><a href="#">Продолжить</a></div>
-                        <div class="category"><h3>Mobile Application</h3></div>
+                        <div class="category"><h3><?php echo $course['course_name'] ?></h3></div>
                         <div class="progress" style="border-radius: 0; height: 5px;" >
                             <div class="progress-bar bg-danger" role="progressbar" style="width: 75%; border-radius: 0;
                          background-image: linear-gradient(to right, #051937, #004d7a, #008793);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -28,71 +29,8 @@ $this->title = 'My Page';
                     </figure>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="course-1-item">
-                    <figure class="thumnail">
-                        <a href="course-single.html"><img src="../images/course_2.jpg" alt="Image" class="img-fluid"></a>
-                        <div class="price"><a href="#">Продолжить</a></div>
-                        <div class="category"><h3>Mobile Application</h3></div>
-                        <div class="progress" style="border-radius: 0; height: 5px;" >
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%; border-radius: 0;
-                         background-image: linear-gradient(to right, #051937, #004d7a, #008793);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </figure>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="course-1-item">
-                    <figure class="thumnail">
-                        <a href="course-single.html"><img src="../images/course_3.jpg" alt="Image" class="img-fluid"></a>
-                        <div class="price"><a href="#">Продолжить</a></div>
-                        <div class="category"><h3>Mobile Application</h3></div>
-                        <div class="progress" style="border-radius: 0; height: 5px;" >
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%; border-radius: 0;
-                         background-image: linear-gradient(to right, #051937, #004d7a, #008793);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </figure>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="course-1-item">
-                    <figure class="thumnail">
-                        <a href="course-single.html"><img src="../images/course_4.jpg" alt="Image" class="img-fluid"></a>
-                        <div class="price"><a href="#">Продолжить</a></div>
-                        <div class="category"><h3>Mobile Application</h3></div>
-                        <div class="progress" style="border-radius: 0; height: 5px;" >
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%; border-radius: 0;
-                         background-image: linear-gradient(to right, #051937, #004d7a, #008793);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </figure>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="course-1-item">
-                    <figure class="thumnail">
-                        <a href="course-single.html"><img src="../images/course_5.jpg" alt="Image" class="img-fluid"></a>
-                        <div class="price"><a href="#">Продолжить</a></div>
-                        <div class="category"><h3>Mobile Application</h3></div>
-                        <div class="progress" style="border-radius: 0; height: 5px;" >
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%; border-radius: 0;
-                         background-image: linear-gradient(to right, #051937, #004d7a, #008793);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </figure>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="course-1-item">
-                    <figure class="thumnail">
-                        <a href="course-single.html"><img src="../images/course_6.jpg" alt="Image" class="img-fluid"></a>
-                        <div class="price"><a href="#">Продолжить</a></div>
-                        <div class="category"><h3>Mobile Application</h3></div>
-                        <div class="progress" style="border-radius: 0; height: 5px;" >
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%; border-radius: 0;
-                         background-image: linear-gradient(to right, #051937, #004d7a, #008793);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </figure>
-                </div>
-            </div>
+            <?php endforeach; ?>
+
         </div>
     </div>
 </div>

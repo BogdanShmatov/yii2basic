@@ -1114,3 +1114,8 @@ h1, h2, h3, h4, h5,
 .left {
   text-align: left;
 }
+.category-hover:hover{
+  background-color: rgb(155, 175, 163);
+  cursor: pointer;
+  transition: 1s;
+}

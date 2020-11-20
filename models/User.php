@@ -20,6 +20,9 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $balance
+ * @property integer $name
+ * @property integer $last_name
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -211,4 +214,5 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
 }

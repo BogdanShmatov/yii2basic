@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+
 ?>
 
 <div class="site-section">
@@ -47,13 +49,13 @@ use yii\bootstrap\ActiveForm;
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <?= $form->field($model, 'cardName')
-                                    ->textInput(['placeholder'=>'BOGDAN SHMATOV','autofocus' => true])
-                                    ->label('Данные держателя карты') ?>
+                                    ->textInput(['placeholder'=>'BOGDAN SHMATOV','autofocus' => true])->label('') ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <a href="/courses/" class="btn btn-secondary btn-lg px-5">Отмена </a>
+                                <?= $form->field($model, 'saveCard')->checkbox()->label('Сохранить карту') ?>
+                                <a href="<?= Url::toRoute(['get-courses']);?>" class="btn btn-secondary btn-lg px-5">Отмена </a>
                                 <?= Html::submitButton('Оплатить', ['class' => 'btn btn-primary btn-lg px-5', 'name' => 'pay-button']) ?>
                             </div>
                         </div>
@@ -67,11 +69,11 @@ use yii\bootstrap\ActiveForm;
                         <h2>Сведения о покупке:</h2>
                         <div class="row">
                             <div class="col-6"><p>Итоговая цена</p></div>
-                            <div class="col-6"><p>$<?php echo $course->course_price?></p></div>
+                            <div class="col-6"><p>$<?php echo $course['course_price']?></p></div>
                             <div class="col-6"><p>Курс</p></div>
-                            <div class="col-6"><p><?php echo $course->course_name?></p></div>
+                            <div class="col-6"><p><?php echo $course['course_name']?></p></div>
                             <div class="col-6"><p>Автор курса</p></div>
-                            <div class="col-6"><p><?php echo $course->course_author?></p></div>
+                            <div class="col-6"><p><?php echo $course['course_author']?></p></div>
                         </div>
                     </div>
                 </div>

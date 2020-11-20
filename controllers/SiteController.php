@@ -1,35 +1,32 @@
 <?php
 
 namespace app\controllers;
+use Yii;
 
+use app\helpers\ClientHelper;
+
+use app\models\CourseUser;
 use app\models\ResendVerificationEmailForm;
-use app\models\User;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
-use yii\web\BadRequestHttpException;
-use app\models\VerifyEmailForm;
-use yii\base\InvalidArgumentException;
 use app\models\SignupForm;
 use app\models\LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
-use app\models\Card;
-use Yii;
+use app\models\VerifyEmailForm;
+
+use yii\filters\AccessControl;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use app\models\EntryForm;
-use yii\httpclient\Client;
-
-
+use yii\base\InvalidArgumentException;
 
 class SiteController extends Controller
 {
-    public $categoriesMenu;
+
 
     public function init()
     {
 
         parent::init();
-        $this->actionCategories();
+       // Yii::$app->runAction('course/get-categories');
 
     }
     public function actions()
@@ -70,14 +67,22 @@ class SiteController extends Controller
 
     public function actionMy()
     {
-        return $this->render('my');
+        $courseUser = CourseUser::findAll([
+            'user_id' => Yii::$app->user->getId(),
+        ]);
+
+        $courses = ClientHelper::getCoursesById($courseUser);
+
+        return $this->render('my', ['courses' => $courses]);
     }
 
     public function actionSignup()
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+
             Yii::$app->session->setFlash('success', 'Спасибо за регистрацию! Пожалуйста проверь свой почтовый ящик, для верификации.');
+
             return $this->goHome();
         }
 
@@ -88,7 +93,6 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
-
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
 
@@ -97,7 +101,7 @@ class SiteController extends Controller
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-//            return $this->goBack();
+
             return $this->render('my');
 
         } else {
@@ -207,82 +211,4 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionCourses()
-    {
-        $client = new Client(['baseUrl' => 'http://appapi',]);
-        $coursesResponse = $client->get('course?expand=cat,lessons0')
-            ->setFormat(Client::FORMAT_JSON)
-            ->send();
-        $courses = json_decode($coursesResponse->content);
-        return $this->render('courses',['courses'=>$courses]);
-
-    }
-
-    public function actionCategories()
-    {
-        $client = new Client(['baseUrl' => 'http://appapi',]);
-        $categoriesResponse = $client->get('category')
-            ->setFormat(Client::FORMAT_JSON)
-            ->send();
-        $categories = json_decode($categoriesResponse->content);
-        $this->categoriesMenu = $categories;
-
-        return $this->render('category',['categories'=>$categories]);
-
-    }
-
-    public function actionView($id)
-    {
-        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
-        $url = $id.'?expand=lessons0';
-        $courseSingleResponse = $client->get($url)
-            ->setFormat(Client::FORMAT_JSON)
-            ->send();
-        $courseSingle = json_decode($courseSingleResponse->content);
-
-        return $this->render('singleCourse',['courseSingle' => $courseSingle]);
-    }
-
-    public function actionBuyCourse($id)
-    {
-        if (Yii::$app->user->isGuest) {
-
-            return $this->redirect(['login']);
-
-        }
-
-        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
-        $coursesResponse = $client->get($id)
-            ->setFormat(Client::FORMAT_JSON)
-            ->send();
-        $courses = json_decode($coursesResponse->content);
-
-        return $this->render('buyCourse',['course' => $courses]);
-
-    }
-
-    public function actionCard($id)
-    {
-        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
-        $coursesResponse = $client->get($id)
-            ->setFormat(Client::FORMAT_JSON)
-            ->send();
-        $courses = json_decode($coursesResponse->content);
-
-        $model = new Card();
-        return $this->render('card',['course' => $courses, 'model' => $model]);
-    }
-
-    public function actionBalance($id, $user_id)
-    {
-        $user = User::findIdentity($user_id);
-        $client = new Client(['baseUrl' => 'http://appapi/course/',]);
-        $coursesResponse = $client->get($id)
-            ->setFormat(Client::FORMAT_JSON)
-            ->send();
-        $courses = json_decode($coursesResponse->content);
-        return $this->render('balance',['course' => $courses, 'user' => $user]);
-    }
-
-        
 }

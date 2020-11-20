@@ -68,8 +68,10 @@ $config = [
             'suffix'=>'/',
             'rules' => [
 
-                '<action>'=>'site/<action>',
-                
+                //'<action>'=>'site/<action>',
+                //'<action>'=>'course/<action>',
+                '<controller:(site|course)>/<action' => '<controller>/<action>',
+
 
             ],
         ],

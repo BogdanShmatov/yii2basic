@@ -6,4 +6,5 @@ return [
     'senderName' => 'Example.com mailer',
     'supportEmail' => 'name@support.com',
     'user.passwordResetTokenExpire' => 3600,
+    'baseUrl' => 'http://appapi',
 ];
