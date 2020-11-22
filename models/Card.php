@@ -25,10 +25,26 @@ class Card extends \yii\db\ActiveRecord
     {
         return '{{%card}}';
     }
+
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            //Использование поведения TimestampBehavior ActiveRecord
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    \yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    \yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+
+                ],
+                //можно использовать 'value' => new \yii\db\Expression('NOW()'),
+                'value' => function(){
+                    return gmdate("Y-m-d H:i:s");
+                },
+
+
+            ],
+
         ];
     }
 

@@ -22,6 +22,8 @@ class m201014_162142_create_order_table extends Migration
             'user_id' => $this->integer(),
             'order_total_price' => $this->integer()->notNull(),
             'order_status' => $this->string()->notNull(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime(),
 
 
         ]);

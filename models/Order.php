@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -36,6 +37,28 @@ class Order extends \yii\db\ActiveRecord
             [['order_total_price', 'order_status'], 'required'],
             [['order_status'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            //Использование поведения TimestampBehavior ActiveRecord
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    \yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    \yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+
+                ],
+                //можно использовать 'value' => new \yii\db\Expression('NOW()'),
+                'value' => function(){
+                    return gmdate("Y-m-d H:i:s");
+                },
+
+
+            ],
+
         ];
     }
 

@@ -3,6 +3,7 @@
 
 namespace app\controllers;
 
+use app\models\Order;
 use Yii;
 
 use app\models\PayByBalance;
@@ -70,9 +71,8 @@ class CourseController extends Controller
 
         $model = new PayByCardForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->createNewOrder($courses)) {
 
-                $model->createNewOrder($courses);
                 return $this->redirect(['site/my']);
 
         }
@@ -90,14 +90,26 @@ class CourseController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->createOrder($course , $user)) {
 
-            $model->createOrder($course , $user);
-
             return $this->redirect(['site/my']);
         }
 
         return $this->render('payByBalance',['course' => $course, 'user' => $user, 'model' => $model]);
     }
 
+    public function actionGetPurchaseHistory()
+    {
+        $orders = Order::findAll(['user_id' => Yii::$app->user->getId()]);
+
+        $coursesName = ClientHelper::getCoursesById($orders, '?fields=course_name');
+        return $this->render('purchaseHistory', ['orders' => $orders, 'coursesName' => $coursesName]);
+    }
+
+    public function actionContinueCourse($id)
+    {
+        $courseSingle = ClientHelper::getInfo('GET', 'course/'.$id.'?expand=lessons0');
+
+        return $this->render('continueCourse',['courseSingle' => $courseSingle]);
+    }
 
 
 }

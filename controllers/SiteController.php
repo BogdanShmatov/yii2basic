@@ -26,7 +26,7 @@ class SiteController extends Controller
     {
 
         parent::init();
-       // Yii::$app->runAction('course/get-categories');
+
 
     }
     public function actions()
@@ -71,9 +71,9 @@ class SiteController extends Controller
             'user_id' => Yii::$app->user->getId(),
         ]);
 
-        $courses = ClientHelper::getCoursesById($courseUser);
+        $courses = ClientHelper::getCoursesById($courseUser, '?expand=lessons0');
 
-        return $this->render('my', ['courses' => $courses]);
+        return $this->render('my', ['courses' => $courses, 'courseUser' => $courseUser]);
     }
 
     public function actionSignup()
@@ -102,7 +102,7 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-            return $this->render('my');
+            return $this->redirect(['site/my']);
 
         } else {
             $model->password = '';

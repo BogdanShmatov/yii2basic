@@ -20,8 +20,8 @@ class m201115_164128_create_card_table extends Migration
             'card_cvc' => $this->integer(),
             'card_balance' => $this->integer(),
             'card_Name' => $this->string(),
-            'created_at' => $this->integer(), // Сделать правку!!!
-            'updated_at' => $this->integer(), // Сделать правку!!!
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime(),
         ]);
 
         $this->batchInsert('{{%card}}',

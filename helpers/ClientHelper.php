@@ -23,7 +23,7 @@ class ClientHelper extends Client
 
     }
 
-    static function getCoursesById($courses) {
+    static function getCoursesById($courses, $data) {
 
         $course_id = [];
         for ($i = 0, $size = count($courses); $i < $size; $i++)  {
@@ -36,7 +36,7 @@ class ClientHelper extends Client
 
         for ($i = 0, $size = count($course_id); $i < $size; $i++) {
 
-            $coursesResp[$i] = self::getInfo('GET', 'course/' . $course_id[$i] . '?expand=lessons0');
+            $coursesResp[$i] = self::getInfo('GET', 'course/' . $course_id[$i] . $data);
         }
 
         return $coursesResp;
