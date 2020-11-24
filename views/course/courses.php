@@ -59,17 +59,17 @@ $userId = Yii::$app->user->getId();
                                   ?>
                                     <p><a href="<?= Url::toRoute([
                                             'continue-course',
-                                            'id'=>$course['id']]);?>" class="btn btn-primary rounded-0 px-4">Продолжить</a></p>
+                                            'id'=>$course['id']]);?>" class="btn btn-primary px-4">Продолжить</a></p>
 
                                 <?php } else if ($course['course_isFree']) { ?>
                                                     <p><a href="<?= Url::toRoute([
                                                             'buy-course',
-                                                            'id'=>$course['id']]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a></p>
+                                                            'id'=>$course['id']]);?>" class="btn btn-primary px-4">В коллекцию</a></p>
 
                                         <?php  } else {?>
                                             <p><a href="<?= Url::toRoute([
                                                     'buy-course',
-                                                    'id'=>$course['id']]);?>" class="btn btn-primary rounded-0 px-4">Купить</a></p> <?php  } ?>
+                                                    'id'=>$course['id']]);?>" class="btn btn-primary px-4">Купить</a></p> <?php  } ?>
 
                         </div>
                     </div>

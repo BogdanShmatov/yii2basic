@@ -89,12 +89,12 @@ AppAsset::register($this);
                 <div class="col-lg-3 text-right">
                     <?php if (Yii::$app->user->isGuest) { ?>
                         <a href="<?= Url::toRoute(['site/logout']);?>" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
-                        <a href="<?= Url::toRoute(['site/signup']);?>" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+                        <a href="<?= Url::toRoute(['site/signup']);?>" class="small btn btn-primary px-4 py-2"><span class="icon-users"></span> Register</a>
                         <?php } else { ?>
                         <a href="login.html" class="small mr-3">
                             <img style="border-radius: 50px; width: 50px; height: 50px;" src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" alt="">
                             <?php echo Yii::$app->user->identity->login ?></a>
-                        <a href="<?= Url::toRoute(['site/logout']);?>" class="small btn btn-primary px-4 py-2 rounded-0"> Выйти</a>
+                        <a href="<?= Url::toRoute(['site/logout']);?>" class="small btn btn-primary px-4 py-2"> Выйти</a>
                     <?php } ?>
                     <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
                                 class="icon-menu h3"></span></a>
@@ -102,7 +102,7 @@ AppAsset::register($this);
             </div>
         </div>
     </header>
-
+    <?= $this->render('//layouts/_messages') ?>
 
     <?= $content ?>
 

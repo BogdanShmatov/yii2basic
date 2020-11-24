@@ -44,7 +44,7 @@ $this->title = 'My courses';
                     <span> Hi, <?php echo Yii::$app->user->identity->name ?>!</span> </h1>
                         <h3>Похоже Вы не купили ни одного курса!</h3>
                             <p>После покупки уроки станут доступны.</p>
-                    <a href="<?= Url::toRoute(['course/get-courses']);?>" class="btn btn-primary rounded-0 px-4">Купить</a>
+                    <a href="<?= Url::toRoute(['course/get-courses']);?>" class="btn btn-primary px-4">Купить</a>
                 </div>
          </div>
     <?php } ?>

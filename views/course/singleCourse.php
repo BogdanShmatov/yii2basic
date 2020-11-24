@@ -27,11 +27,11 @@ use yii\helpers\Url;
         </div>
         <div class="row">
             <div class="col-md-6 mb-4">
-                <p>
-                    <iframe width="580" height="360" src="<?php echo $courseSingle['course_preview']?>"
+                <div class="video-1">
+                    <iframe width="100%" height="350vh" src="<?php echo $courseSingle['course_preview']?>"
                             frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
-                </p>
+                </div>
             </div>
             <div class="col-lg-5 ml-auto align-self-center">
                 <h2 class="section-title-underline mb-5">
@@ -44,11 +44,11 @@ use yii\helpers\Url;
                     if($courseSingle['course_isFree']){
 
                     ?>
-                <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a></p>
+                <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary px-4">В коллекцию</a></p>
 
                 <?php  }else{
                     ?>
-                    <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">Купить</a></p>
+                    <p><a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary px-4">Купить</a></p>
                 <?php  }
                 ?>
             </div>
@@ -62,14 +62,14 @@ use yii\helpers\Url;
             <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
                 <h1>Похоже это платный контент!</h1>
                 <p>После покупки уроки станут доступны.</p>
-                <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">Купить</a>
+                <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary px-4">Купить</a>
             </div>
         <?php } else {?>
             <div class="row">
                     <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
                         <h1>Похоже это бесплатный контент!</h1>
                         <p>Все уроки доступны.</p>
-                        <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary rounded-0 px-4">В коллекцию</a>
+                        <a href="<?= Url::toRoute(['buy-course', 'id'=>$courseSingle['id']]);?>" class="btn btn-primary px-4">В коллекцию</a>
                     </div>
             </div>
         <?php } ?>
@@ -106,7 +106,7 @@ use yii\helpers\Url;
             <?php } else {?>
 
                 <div class="col-lg-9 col-md-6 mb-4">
-                    <div class="video-container" style="width: 100%; height: 70vh; background-color: #51be78">
+                    <div class="video-1" style="width: 100%; height: 70vh; background-color: #51be78">
                         <iframe width="100%" height="100%" src=" <?php echo $courseSingle['course_video_url']?>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>

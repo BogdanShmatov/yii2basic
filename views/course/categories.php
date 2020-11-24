@@ -50,7 +50,7 @@ $this->title = 'Category';
                         </div>
                         <p>Разработка мобильных приложений</p>
                         <p class="desc mb-4">Владилен Минин</p>
-                        <p><a href="/course/buy-course/?id=2" class="btn btn-primary rounded-0 px-4">В коллекцию</a></p>
+                        <p><a href="/course/buy-course/?id=2" class="btn btn-primary px-4">В коллекцию</a></p>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@ $this->title = 'Category';
                         </div>
                         <p>Разработка мобильных приложений</p>
                         <p class="desc mb-4">Владилен Минин</p>
-                        <p><a href="/course/buy-course/?id=2" class="btn btn-primary rounded-0 px-4">В коллекцию</a></p>
+                        <p><a href="/course/buy-course/?id=2" class="btn btn-primary px-4">В коллекцию</a></p>
                     </div>
                 </div>
             </div>

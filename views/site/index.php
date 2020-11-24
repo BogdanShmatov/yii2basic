@@ -11,7 +11,7 @@ $this->title = 'Academic';
                 <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
                     <h1>Academics University
                         <div class="col-12">
-                            <a href="/get-courses/" class="btn btn-primary btn-lg px-5">Все курсы </a>
+                            <a href="course/get-courses/" class="btn btn-primary btn-lg px-5">Все курсы </a>
                         </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@ $this->title = 'Academic';
                 <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
                     <h1>You Can Learn</h1>
                     <div class="col-12">
-                        <a href="/get-courses/" class="btn btn-primary btn-lg px-5">Все курсы </a>
+                        <a href="course/get-courses/" class="btn btn-primary btn-lg px-5">Все курсы </a>
                     </div>
                 </div>
             </div>
