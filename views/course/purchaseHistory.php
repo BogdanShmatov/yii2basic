@@ -12,7 +12,7 @@ use yii\helpers\Url;
                     <span>Hi, <?php echo Yii::$app->user->identity->name ?></span>
                 </h1>
                 <h4>Вы еще не покупали курсы ;)</h4>
-                <a href="<?= Url::toRoute(['course/get-courses']);?>" class="btn btn-primary rounded-0 px-4">Купить</a>
+                <a href="<?= Url::toRoute(['course/get-courses']);?>" class="btn btn-primary px-4">Купить</a>
             </div>
         </div>
         <?php } else { ?>

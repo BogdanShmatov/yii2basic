@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \models\SignupForm */
+/* @var $model app\models\Signup */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -29,11 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-md-12 form-group">
 
-                        <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
+                        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
                         <?= $form->field($model, 'email') ?>
 
                         <?= $form->field($model, 'password')->passwordInput() ?>
+                        <?= $form->field($model, 'retypePassword')->passwordInput() ?>
 
                     </div>
                 </div>

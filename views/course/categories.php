@@ -18,7 +18,7 @@ $this->title = 'Category';
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <div class="course-1-item">
+                <div class="course-1-item-my">
                     <?php foreach($categories as $category): ?>
                         <div class="category border-bottom category-hover">
                             <h3><a style="color: white" href="<?= Url::toRoute(['pay-by-card', 'id'=>$category['cat']['id']]);?>"><?php echo $category['cat']['cat_name']?></a></h3>

@@ -11,7 +11,7 @@ use yii\helpers\Url;
             <div class="col-lg-8 col-md-6 mb-4">
                 <div class="course-1-item">
                     <img src="https://seiv.io/wp-content/uploads/sberbank-classic-debitcard-2.png" alt="Image" style="height: 100px;" class="img-fluid center">
-                    <div class="category" style="background-image: linear-gradient(to right, #9be3aa, #91e3a8, #85e3a6, #79e2a5, #6ae2a4, #62e2a9, #5ae2af, #52e2b4, #56e2c0, #5ee2ca, #69e1d2, #76e0d9);"><h3>Еще пару шагов!</h3>   </div>
+                    <div class="line" style="background-image: linear-gradient(to right, #9be3aa, #91e3a8, #85e3a6, #79e2a5, #6ae2a4, #62e2a9, #5ae2af, #52e2b4, #56e2c0, #5ee2ca, #69e1d2, #76e0d9);"><h3>Еще пару шагов!</h3>   </div>
                     <?php $form = ActiveForm::begin(['id' => 'card-form',
                                                         'options' => [
                                                             'class' => 'card-form',

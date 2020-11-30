@@ -22,9 +22,9 @@ $this->title = 'My courses';
         <div class="row">
             <?php foreach ($courses as $course): ?>
             <div class="col-lg-4">
-                <div class="course-1-item">
+                <div class="course-1-item-my">
                     <figure class="thumnail">
-                        <a href="course-single.html"><img src="<?php echo $course['course_img_url'] ?>" alt="Image" class="img-fluid"></a>
+                        <a href="<?= Url::toRoute(['course/continue-course', 'id'=>$course['id']]);?>"><img src="<?php echo $course['course_img_url'] ?>" alt="Image" class="img-fluid"></a>
                         <div class="price"><a href="<?= Url::toRoute(['course/continue-course', 'id'=>$course['id']]);?>">Продолжить</a></div>
                         <div class="category"><h3><?php echo $course['course_name'] ?></h3></div>
                         <div class="progress" style="border-radius: 0; height: 5px;" >

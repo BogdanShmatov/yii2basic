@@ -7,4 +7,5 @@ return [
     'supportEmail' => 'name@support.com',
     'user.passwordResetTokenExpire' => 3600,
     'baseUrl' => 'http://appapi',
+    'defaultRole' => 'user',
 ];

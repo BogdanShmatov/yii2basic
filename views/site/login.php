@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-5">
                 <div class="row">
                     <div class="col-md-12 form-group">
-                    <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
+                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
                     <?= $form->field($model, 'password')->passwordInput() ?>
 

@@ -7,8 +7,8 @@ use app\helpers\ClientHelper;
 
 use app\models\CourseUser;
 use app\models\ResendVerificationEmailForm;
-use app\models\SignupForm;
-use app\models\LoginForm;
+use app\models\Signup as SignupForm;
+use app\models\Login as LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\VerifyEmailForm;
@@ -101,7 +101,9 @@ class SiteController extends Controller
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-
+            if (\Yii::$app->user->can('adminAccess')) {
+                return $this->redirect(['admin/default/index']);
+            }
             return $this->redirect(['site/my']);
 
         } else {
