@@ -20,6 +20,47 @@ class ClientHelper extends Client
                 ->send();
             return $clientData = $clientResp->getData();
         }
+        if ($type === 'DELETE') {
+
+            $clientResp = $client->createRequest()
+                ->setMethod($type)
+                ->setUrl($data)
+                ->send();
+
+            return $clientResp;
+        }
+        if ($type === 'POST') {
+
+            $clientResp = $client
+                ->post('course', ['course_name' =>  $data['Course']['course_name'],
+                                        'course_author' =>  $data['Course']['course_author'],
+                                        'course_img_url' =>  $data['Course']['course_img_url'],
+                                        'course_video_url' =>  $data['Course']['course_video_url'],
+                                        'course_description' =>  $data['Course']['course_description'],
+                                        'course_price' =>  $data['Course']['course_price'],
+                                        'course_preview' =>  $data['Course']['course_preview'],
+                                        'course_isFree' =>  $data['Course']['course_isFree'],
+                                        ])
+                ->send();
+
+            return $clientResp;
+        }
+        if ($type === 'PUT') {
+            $id = $data['Course']['id'];
+            $clientResp = $client
+                ->put('course/'.$id , ['course_name' =>  $data['Course']['course_name'],
+                    'course_author' =>  $data['Course']['course_author'],
+                    'course_img_url' =>  $data['Course']['course_img_url'],
+                    'course_video_url' =>  $data['Course']['course_video_url'],
+                    'course_description' =>  $data['Course']['course_description'],
+                    'course_price' =>  $data['Course']['course_price'],
+                    'course_preview' =>  $data['Course']['course_preview'],
+                    'course_isFree' =>  $data['Course']['course_isFree'],
+                ])
+                ->send();
+
+            return $clientResp;
+        }
 
     }
 

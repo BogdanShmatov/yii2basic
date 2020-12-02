@@ -74,7 +74,7 @@ AdminAsset::register($this);
             $menuItems = [
                 ['label' => 'Главная', 'url' => ['/admin/default/index']],
                 ['label' => 'Пользователи', 'url' => ['/rbac/default/index']],
-                ['label' => 'Курсы', 'url' => ['/admin/default/index']],
+                ['label' => 'Курсы', 'url' => ['/admin/course/index']],
                 ['label' => 'Посты', 'url' => ['/admin/default/index']],
                 ['label' => 'Комментарии', 'url' => ['/admin/default/index']],
                 ['label' => 'USER mode', 'url' => ['/site/my']],

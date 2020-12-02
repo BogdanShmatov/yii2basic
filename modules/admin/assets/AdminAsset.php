@@ -31,6 +31,7 @@ class AdminAsset extends AssetBundle
         'js/plugins/moment.min.js',
         'js/plugins/jquery.nicescroll.js',
         'js/main.js',
+        'js/courseAdd.js',
 
     ];
     public $depends = [
