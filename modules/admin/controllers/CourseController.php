@@ -2,12 +2,17 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Lesson;
+use app\models\Model;
 use Yii;
 use app\models\Course;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\helpers\ClientHelper;
+use yii\web\Response;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -36,6 +41,7 @@ class CourseController extends Controller
     public function actionIndex()
     {
         $courses =  ClientHelper::getInfo('GET', 'course');
+
         return $this->render('index',['courses'=>$courses]);
     }
 
@@ -49,6 +55,7 @@ class CourseController extends Controller
     {
 
         $course = ClientHelper::getInfo('GET', 'course/'.$id);
+
         return $this->render('view', [
             'course' => $course,
         ]);
@@ -62,37 +69,35 @@ class CourseController extends Controller
     public function actionCreate()
     {
         $model = new Course();
+        $modelsLessons = [new Lesson()];
+        $categories = ClientHelper::getInfo('GET', 'category');
+
+        // Если пришёл AJAX запрос
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            $data = Yii::$app->request->post();
+            $lessons = $data['Lesson'];
+            // Получаем данные модели из запроса
+
+            if ($model->load($data)) {
+                $respCreateCourse = ClientHelper::getInfo('POST', $data);
+                    for ($i = 0, $size = count($lessons); $i < $size; $i++){
+                        $lessons[$i]['course_id'] = $respCreateCourse['id'];
+                        ClientHelper::postLesson('POST', $lessons[$i]);
+                    }
+                    Yii::$app->session->setFlash('success', 'Данные успешно сохранены ;)');
+
+                    return $this->redirect(['index']);
+                }
+        }
 
         return $this->render('create', [
             'model' => $model,
+            'categories' => $categories,
+            'modelsLessons' => (empty($modelsLessons) )? [new Lesson()] : $modelsLessons
         ]);
-
-
     }
 
-    public function actionCreateCourse()
-    {
-        $model = new Course();
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        // Если пришёл AJAX запрос
-        if (Yii::$app->request->isAjax) {
-            $data = Yii::$app->request->post();
-            // Получаем данные модели из запроса
-            ClientHelper::getInfo('POST', $data);
-            if ($model->load($data)) {
-                return $this->redirect(['index']);
-            } else {
-                // Если это не AJAX запрос, отправляем ответ с сообщением об ошибке
-                return [
-                    "data" => null,
-                    "error" => "error2"
-                ];
-
-            }
-        }
-
-
-    }
 
     /**
      * Updates an existing Course model.
@@ -104,20 +109,30 @@ class CourseController extends Controller
     public function actionUpdate($id)
     {
         $model = new Course();
+        $modelsLessons = [new Lesson()];
+
+        $lessons = ClientHelper::postLesson('GET', $id);
         $course = ClientHelper::getInfo('GET', 'course/'.$id);
+        $categories = ClientHelper::getInfo('GET', 'category');
         $data = Yii::$app->request->post();
+
         if ($model->load($data)) {
             $data['Course']['id'] = $course['id'];
-            ClientHelper::getInfo('PUT', $data);
+//            ClientHelper::getInfo('PUT', $data);
 
-            return $this->redirect(['view', 'id' => $course['id']]);
+//            return $this->redirect(['view', 'id' => $course['id']]);
+            var_dump($data);die();
         }
 
         return $this->render('update', [
+            'categories' => $categories,
             'course' => $course,
             'model' => $model,
+            'modelsLessons' => $modelsLessons,
+            'lessons' => $lessons
         ]);
     }
+
 
     /**
      * Deletes an existing Course model.
@@ -132,4 +147,5 @@ class CourseController extends Controller
 
         return $this->redirect(['index']);
     }
+
 }

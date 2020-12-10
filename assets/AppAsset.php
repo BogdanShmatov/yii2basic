@@ -38,7 +38,7 @@ class AppAsset extends AssetBundle
 
     ];
     public $js = [
-        'js/jquery-3.3.1.min.js',
+//        'https://code.jquery.com/jquery-3.5.1.min.js',
         'js/jquery-migrate-3.0.1.min.js',
         'js/jquery-ui.js',
         'js/popper.min.js',

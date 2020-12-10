@@ -16,6 +16,7 @@ class Course extends Model
     public $course_preview;
     public $course_isFree;
     public $id;
+    public $cat_id;
 
     public function rules()
     {

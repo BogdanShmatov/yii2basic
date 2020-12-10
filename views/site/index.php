@@ -9,7 +9,7 @@ $this->title = 'Academic';
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
-                    <h1>Academics University
+                    <h1>Academics
                         <div class="col-12">
                             <a href="course/get-courses/" class="btn btn-primary btn-lg px-5">Все курсы </a>
                         </div>

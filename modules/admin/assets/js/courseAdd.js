@@ -13,7 +13,7 @@ $(document).ready(function() {
         }).done(function(data) {
             if (data.error == null) {
                 // Если ответ сервера успешно получен
-                $("#output").text(data.data.text)
+                $("#output").innerHTML(data.data.text)
             } else {
                 // Если при обработке данных на сервере произошла ошибка
                 $("#output").text(data.error)

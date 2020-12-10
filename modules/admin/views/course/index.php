@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <th><a href="/index?sort=course_name" data-sort="course_name">Course Name</a></th>
                     <th><a href="/index?sort=course_author" data-sort="course_author">Course Author</a></th>
-                    <th><a href="/index?sort=lessons" data-sort="lessons">Lessons</a></th>
                     <th><a href="/index?sort=date" data-sort="date">Date</a></th>
                     <th><a href="/index?sort=price" data-sort="price">Price</a></th>
                     <th class="action-column">&nbsp;</th>
@@ -34,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <td><input type="text" class="form-control" name="CourseSearch[course_name]"></td>
                     <td><input type="text" class="form-control" name="CourseSearch[course_author]"></td>
-                    <td><input type="text" class="form-control" name="CourseSearch[lessons]"></td>
                     <td><input type="text" class="form-control" name="CourseSearch[date]"></td>
                     <td><input type="text" class="form-control" name="CourseSearch[price]"></td>
                     <td>&nbsp;</td>
@@ -45,9 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr data-key="<?php echo $course['id']?>">
                     <td><?php echo $course['course_name']?></td>
                     <td><?php echo $course['course_author']?></td>
-                    <td><?php echo $course['lessons']?></td>
                     <td><?php echo $course['date']?></td>
-                    <td><?php echo $course['course_price']?></td>
+                    <td><?php if ($course['course_price'] === 0) {
+                        echo  'FREE';
+                        } else echo '$'.$course['course_price']?></td>
                     <td>
                         <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>" title="View" aria-label="View" data-pjax="0">
                             <span class="glyphicon glyphicon-eye-open"></span></a>

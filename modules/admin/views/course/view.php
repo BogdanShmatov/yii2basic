@@ -36,6 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?php echo $course['course_name'] ?></td>
             </tr>
             <tr>
+                <th>Course Category</th>
+                <td><?php echo $course['cat']['cat_name'] ?></td>
+            </tr>
+            <tr>
                 <th>Course Author</th>
                 <td><?php echo $course['course_author'] ?></td>
             </tr>
@@ -52,10 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?php if ($course['course_isFree'] === 1) {
                     echo 'YES';
                     } else echo 'NO'; ?></td>
-            </tr>
-            <tr>
-                <th>Lessons</th>
-                <td><?php echo $course['lessons'] ?></td>
             </tr>
             </tbody>
         </table>

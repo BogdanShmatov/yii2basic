@@ -1,10 +1,9 @@
 <?php
 
 namespace app\controllers;
+
 use Yii;
-
 use app\helpers\ClientHelper;
-
 use app\models\CourseUser;
 use app\models\ResendVerificationEmailForm;
 use app\models\Signup as SignupForm;
@@ -12,7 +11,6 @@ use app\models\Login as LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\VerifyEmailForm;
-
 use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -20,8 +18,6 @@ use yii\base\InvalidArgumentException;
 
 class SiteController extends Controller
 {
-
-
     public function init()
     {
 
@@ -79,12 +75,12 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            if ($model->load(Yii::$app->request->post()) && $model->signup()) {
 
-            Yii::$app->session->setFlash('success', 'Спасибо за регистрацию! Пожалуйста проверь свой почтовый ящик, для верификации.');
+                Yii::$app->session->setFlash('success', 'Спасибо за регистрацию! Пожалуйста проверь свой почтовый ящик, для верификации.');
 
-            return $this->goHome();
-        }
+                return $this->goHome();
+            }
 
         return $this->render('signup', [
             'model' => $model,
@@ -95,7 +91,6 @@ class SiteController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
-
         }
 
         $model = new LoginForm();

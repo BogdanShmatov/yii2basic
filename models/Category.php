@@ -3,25 +3,17 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * This is the model class for table "category".
  *
  * @property int $id
  * @property string $cat_name
- *
- * @property Course[] $courses
- */
-class Category extends \yii\db\ActiveRecord
+**/
+class Category extends Model
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'category';
-    }
-
+    public $cat_name;
     /**
      * {@inheritdoc}
      */
@@ -33,24 +25,4 @@ class Category extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'cat_name' => 'Cat Name',
-        ];
-    }
-
-    /**
-     * Gets query for [[Courses]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCourses()
-    {
-        return $this->hasMany(Course::className(), ['cat_id' => 'id']);
-    }
 }

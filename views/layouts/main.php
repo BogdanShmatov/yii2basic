@@ -11,6 +11,8 @@ use yii\helpers\Url;
 
 AppAsset::register($this);
 
+$categories = \app\helpers\ClientHelper::postCategory('GET', 'category');
+
 ?>
 
 <?php $this->beginPage() ?>
@@ -59,7 +61,11 @@ AppAsset::register($this);
                                 <li class="has-children">
                                     <a href="<?= Url::toRoute(['course/get-categories']);?>" class="nav-link text-left">Categories</a>
                                     <ul class="dropdown">
-                                        <li><a href="#">Категории</a></li>
+                                        <?php
+                                        foreach ($categories as $category):?>
+                                        <li><a href="<?= Url::toRoute(['course/get-categories', 'id' => $category['id']]);?>"><?php echo $category['cat_name'] ?></a></li>
+
+                                        <?php endforeach ?>
                                     </ul>
                                 </li>
                                 <li>
@@ -74,7 +80,10 @@ AppAsset::register($this);
                                 <li class="has-children">
                                     <a href="<?= Url::toRoute(['course/get-courses']);?>" class="nav-link text-left">Store</a>
                                     <ul class="dropdown">
-                                        <li><a href="#">Категории</a></li>
+                                        <?php foreach ($categories as $category):?>
+                                        <li><a href="<?= Url::toRoute(['course/get-categories', 'id' => $category['id']]);?>"><?php echo $category['cat_name'] ?></a></li>
+
+                                        <?php endforeach ?>
                                     </ul>
                                 </li>
                                 <li>

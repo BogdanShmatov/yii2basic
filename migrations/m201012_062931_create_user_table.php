@@ -24,7 +24,7 @@ class m201012_062931_create_user_table extends Migration
             'updated_at' => $this->integer(11)->notNull(),
             'verification_token' => $this->string(),
             'balance' => $this->integer(),
-            'name' => $this->string(255),
+            'name' => $this->string(255)->defaultValue('User'),
             'last_name' => $this->string(255),
         ]);
     }

@@ -1175,3 +1175,12 @@ box-shadow: none;
 .img-fluid {
 border-radius: 10px 10px 0 0;
 }
+
+a.cat_btn {
+  background: #26a69a;
+  padding: 5px;
+  border-radius: 40px;
+  text-align: center;
+  color: #FFFFFF;
+}
+
