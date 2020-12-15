@@ -33,7 +33,11 @@ use yii\helpers\Url; ?>
                                 ->checkbox()->hiddenInput()->label('') ?>
                             <div class="col-12">
                                 <a href="<?= Url::toRoute(['get-courses']);?>" class="btn btn-secondary btn-lg px-5">Отмена </a>
+                                <?php if ($user->balance < $course['course_price']) { ?>
+                                    <a href="<?= Url::toRoute(['profile/view-balance']);?>" class="btn btn-secondary btn-lg px-5">Пополнить баланс</a>
+                                <?php  } else {?>
                                 <?= Html::submitButton('Оплатить', ['class' => 'btn btn-primary btn-lg px-5', 'name' => 'pay-button']) ?>
+                            <?php } ?>
                             </div>
                         </div>
                         <?php ActiveForm::end(); ?>

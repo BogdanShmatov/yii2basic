@@ -16,6 +16,7 @@ class PayByCardForm extends Model
     public $cvc;
     public $cardName;
     public $saveCard;
+    public $sum;
 
     private $_card;
 
@@ -42,6 +43,7 @@ class PayByCardForm extends Model
             ['cvc', 'number', 'message' => 'Не корректный cvc'],
 
             ['cardName', 'string', 'max' => 255],
+            ['sum', 'integer'],
 
             ['saveCard', 'boolean'],
 
@@ -64,37 +66,55 @@ class PayByCardForm extends Model
     public function createNewOrder($courses)
 
     {   $card = Card::findOne(['card_number' => $this->cardNumber]);
+
         if ($courses['course_price'] === 0 || $card->card_balance >= $courses['course_price']) {
 
-        $order = new Order();
-        $order->user_id = Yii::$app->user->getId();
-        $order->course_id = $courses['id'];
-        $order->order_total_price = $courses['course_price'];
-        $order->order_status = "Завершен";
-        $card->card_balance -=  $order->order_total_price;
-        $card->update();
-        $order->save();
+            $order = new Order();
+            $order->user_id = Yii::$app->user->getId();
+            $order->course_id = $courses['id'];
+            $order->order_total_price = $courses['course_price'];
+            $order->order_status = "Завершен";
+            $card->card_balance -=  $order->order_total_price;
+            $card->update();
+            $order->save();
 
-        $courseUser = new CourseUser();
-        $courseUser->user_id = Yii::$app->user->getId();
-        $courseUser->course_id = $courses['id'];
-        $courseUser->order_id = $order->id;
-        $courseUser->save();
+            $courseUser = new CourseUser();
+            $courseUser->user_id = Yii::$app->user->getId();
+            $courseUser->course_id = $courses['id'];
+            $courseUser->order_id = $order->id;
+            $courseUser->save();
 
-        if ($this->saveCard) {
+                if ($this->saveCard) {
 
-                $cardUser = new CardUser();
-                $cardUser->user_id = Yii::$app->user->getId();
-                $cardUser->card_id = $card->id;
-                return $cardUser->save();
-        }
+                        $cardUser = new CardUser();
+                        $cardUser->user_id = Yii::$app->user->getId();
+                        $cardUser->card_id = $card->id;
 
-        return true;
+                        return $cardUser->save();
+                }
+
+            return true;
 
         } else return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
 
 
 
+
+    }
+
+    public function enrollBalance()
+    {
+        $card = Card::findOne(['card_number' => $this->cardNumber]);
+        $user = User::findOne(Yii::$app->user->getId());
+
+        if ($card->card_balance >= $this->sum) {
+
+            $user->balance += $this->sum;
+            $card->card_balance -=  $this->sum;
+            $card->update();
+            $user->update();
+
+        } else return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
 
     }
 

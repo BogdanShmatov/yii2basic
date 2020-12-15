@@ -89,10 +89,18 @@ $categories = \app\helpers\ClientHelper::postCategory('GET', 'category');
                                 <li>
                                     <a href="<?= Url::toRoute(['course/get-purchase-history']);?>" class="nav-link text-left">Purchase history</a>
                                 </li>
-                                <?php  if (\Yii::$app->user->can('adminAccess')) {?>
-                                    <li><a href="<?= Url::toRoute(['admin/default/index']);?>" class="small btn btn-primary px-4 py-2"> ADMIN mode</a></li>
 
-                                <?php }?>
+
+                                <li class="has-children">
+                                    <a href="/profile/edit-profile/" class="small mr-3">
+                                        <img src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" class="img-circle avatar" style="width: 50px; height: 50px; border-radius: 50px" alt="user name"/>
+                                        <?php echo Yii::$app->user->identity->username ?></a>
+                                    <ul class="dropdown">
+                                            <li><a href="<?= Url::toRoute(['profile/edit-profile']);?>">Редактировать профиль</a></li>
+                                            <li><a href="<?= Url::toRoute(['profile/view-balance']);?>">Баланс</a></li>
+                                            <li><a href="<?= Url::toRoute(['profile/view-my-cards']);?>">Мои карты</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         <?php } ?>
 
@@ -103,9 +111,10 @@ $categories = \app\helpers\ClientHelper::postCategory('GET', 'category');
                         <a href="<?= Url::toRoute(['site/logout']);?>" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
                         <a href="<?= Url::toRoute(['site/signup']);?>" class="small btn btn-primary px-4 py-2"><span class="icon-users"></span> Register</a>
                         <?php } else { ?>
-                        <a href="/profile/view/" class="small mr-3">
-                            <img style="border-radius: 50px; width: 50px; height: 50px;" src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" alt="">
-                            <?php echo Yii::$app->user->identity->username ?></a>
+                        <?php  if (\Yii::$app->user->can('adminAccess')) {?>
+                            <a href="<?= Url::toRoute(['admin/default/index']);?>" class="small btn btn-primary px-2 py-2"> ADMIN mode</a>
+
+                        <?php }?>
                         <a href="<?= Url::toRoute(['site/logout']);?>" class="small btn btn-primary px-4 py-2"> Выйти</a>
                     <?php } ?>
                     <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
@@ -114,7 +123,8 @@ $categories = \app\helpers\ClientHelper::postCategory('GET', 'category');
             </div>
         </div>
     </header>
-    <?= $this->render('//layouts/_messages') ?>
+    <?= $this->render('/layouts/_messages') ?>
+    
 
     <?= $content ?>
 

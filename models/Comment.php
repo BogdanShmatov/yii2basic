@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "comment".
@@ -14,7 +15,6 @@ use Yii;
  * @property int $course_id
  * @property int $user_id
  *
- * @property Course $course
  * @property User $user
  */
 class Comment extends \yii\db\ActiveRecord
@@ -37,7 +37,6 @@ class Comment extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['course_id', 'user_id'], 'integer'],
             [['content'], 'string', 'max' => 255],
-            [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -56,17 +55,27 @@ class Comment extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
         ];
     }
-
-    /**
-     * Gets query for [[Course]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCourse()
+    public function behaviors()
     {
-        return $this->hasOne(Course::className(), ['id' => 'course_id']);
-    }
+        return [
+            //Использование поведения TimestampBehavior ActiveRecord
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    \yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    \yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
 
+                ],
+                //можно использовать 'value' => new \yii\db\Expression('NOW()'),
+                'value' => function(){
+                    return gmdate("Y-m-d H:i:s");
+                },
+
+
+            ],
+
+        ];
+    }
     /**
      * Gets query for [[User]].
      *

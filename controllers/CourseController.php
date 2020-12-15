@@ -2,7 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Comment;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use app\models\Order;
 use app\models\PayByBalance;
@@ -47,9 +49,34 @@ class CourseController extends Controller
     public function actionView($id)
     {
         $courseSingle = ClientHelper::getInfo('GET', 'course/'.$id.'?expand=lessons0');
+        $comment = new Comment();
+        $dataProvider = new ActiveDataProvider([
+            'query' => Comment::find()->where(['course_id'=>$id]),
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+
+        ]);
+
+        if ($comment->load(Yii::$app->request->post())) {
+
+            $comment->course_id = $id;
+            $comment->user_id = Yii::$app->user->getId();
+            $comment->created_at = gmdate("Y-m-d H:i:s");
+            $comment->updated_at = gmdate("Y-m-d H:i:s");
+            if ( $comment->save()) {
+                return $this->render('singleCourse',[
+                    'courseSingle' => $courseSingle,
+                    'listDataProvider' => $dataProvider,
+                    'comment' => $comment
+                ]);
+            }
+        }
 
         return $this->render('singleCourse',[
-            'courseSingle' => $courseSingle
+            'courseSingle' => $courseSingle,
+            'listDataProvider' => $dataProvider,
+            'comment' => $comment
         ]);
     }
 

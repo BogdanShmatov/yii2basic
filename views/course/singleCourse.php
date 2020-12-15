@@ -1,7 +1,12 @@
 <?php
 
 $this->title = $courseSingle['course_name'];
+
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ListView;
+
 ?>
 
 <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('../images/bg_1.jpg')">
@@ -126,4 +131,38 @@ use yii\helpers\Url;
         </div>
     </div>
 </div>
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <?php $form = ActiveForm::begin(['id' => 'card-form',
+                        'options' => [
+                            'class' => 'comment-form',
+                        ],
+                    ]); ?>
+                    <div class="panel-body">
+                        <?= $form->field($comment, 'content')
+                            ->textarea(['placeholder'=>'Добавьте Ваш комментарий','autofocus' => true])
+                            ->label('') ?>
+                        <div class="mar-top clearfix">
+                            <?= Html::submitButton('Доавить', ['class' => 'btn btn-primary btn-lg px-5', 'name' => 'pay-button']) ?>
+                        </div>
+                    </div>
+                </div>
+                <?php ActiveForm::end(); ?>
+            </div><!-- /.row -->
+    </section><!-- /.container -->
 
+<?php
+
+
+echo ListView::widget([
+'dataProvider' => $listDataProvider,
+'itemView' => '_comment',
+    'pager' => [
+        'nextPageLabel' => 'Следующая',
+        'prevPageLabel' => 'Предыдущая',
+        'maxButtonCount' => 5,
+    ],
+]);
+?>

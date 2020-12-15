@@ -118,10 +118,9 @@ class CourseController extends Controller
 
         if ($model->load($data)) {
             $data['Course']['id'] = $course['id'];
-//            ClientHelper::getInfo('PUT', $data);
+            ClientHelper::getInfo('PUT', $data);
 
-//            return $this->redirect(['view', 'id' => $course['id']]);
-            var_dump($data);die();
+            return $this->redirect(['view', 'id' => $course['id']]);
         }
 
         return $this->render('update', [
