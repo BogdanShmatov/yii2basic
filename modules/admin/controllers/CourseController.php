@@ -9,6 +9,7 @@ use app\models\Course;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\helpers\ClientHelper;
@@ -40,7 +41,7 @@ class CourseController extends Controller
      */
     public function actionIndex()
     {
-        $courses =  ClientHelper::getInfo('GET', 'course');
+        $courses =  ClientHelper::sendRequest('GET', 'course');
 
         return $this->render('index',['courses'=>$courses]);
     }
@@ -54,7 +55,7 @@ class CourseController extends Controller
     public function actionView($id)
     {
 
-        $course = ClientHelper::getInfo('GET', 'course/'.$id);
+        $course = ClientHelper::sendRequest('GET', 'course/'.$id);
 
         return $this->render('view', [
             'course' => $course,
@@ -70,20 +71,34 @@ class CourseController extends Controller
     {
         $model = new Course();
         $modelsLessons = [new Lesson()];
-        $categories = ClientHelper::getInfo('GET', 'category');
+        $categories = ClientHelper::sendRequest('GET', 'category');
 
         // Если пришёл AJAX запрос
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $data = Yii::$app->request->post();
-            $lessons = $data['Lesson'];
+
             // Получаем данные модели из запроса
 
-            if ($model->load($data)) {
-                $respCreateCourse = ClientHelper::getInfo('POST', $data);
+            if ($model->load(Yii::$app->request->post())) {
+                $data = [
+                    'course_name' =>  $model->course_name,
+                    'cat_id' =>  $model->cat_id,
+                    'course_author' =>  $model->course_author,
+                    'course_img_url' =>  $model->course_img_url,
+                    'course_video_url' =>  $model->course_video_url,
+                    'course_description' =>  $model->course_description,
+                    'course_price' =>  $model->course_price,
+                    'course_preview' =>  $model->course_preview,
+                    'course_isFree' =>  $model->course_isFree,
+                    'user_id' => Yii::$app->user->getId(),
+                ];
+                $data2 = Yii::$app->request->post();
+                $lessons = $data2['Lesson'];
+
+                $respCreateCourse = ClientHelper::sendRequest('POST','course', $data);
                     for ($i = 0, $size = count($lessons); $i < $size; $i++){
                         $lessons[$i]['course_id'] = $respCreateCourse['id'];
-                        ClientHelper::postLesson('POST', $lessons[$i]);
+                        ClientHelper::sendRequest('POST','lesson', $lessons[$i]);
                     }
                     Yii::$app->session->setFlash('success', 'Данные успешно сохранены ;)');
 
@@ -111,14 +126,29 @@ class CourseController extends Controller
         $model = new Course();
         $modelsLessons = [new Lesson()];
 
-        $lessons = ClientHelper::postLesson('GET', $id);
-        $course = ClientHelper::getInfo('GET', 'course/'.$id);
-        $categories = ClientHelper::getInfo('GET', 'category');
-        $data = Yii::$app->request->post();
+        $lessons = ClientHelper::sendRequest('GET', 'lesson?course_id='.$id);
+        $course = ClientHelper::sendRequest('GET', 'course/'.$id.'?expand=user_id');
+        $categories = ClientHelper::sendRequest('GET', 'category');
 
-        if ($model->load($data)) {
-            $data['Course']['id'] = $course['id'];
-            ClientHelper::getInfo('PUT', $data);
+        if (!($course['user_id'] == Yii::$app->user->getId()) && !Yii::$app->user->can('admin')) {
+            throw new ForbiddenHttpException("Хм... Нет доступа!");
+        }
+        if ($model->load(Yii::$app->request->post())) {
+            $model->id = $course['id'];
+
+            $data = [
+                'course_name' =>  $model->course_name,
+                'cat_id' =>  $model->cat_id,
+                'course_author' =>  $model->course_author,
+                'course_img_url' =>  $model->course_img_url,
+                'course_video_url' =>  $model->course_video_url,
+                'course_description' =>  $model->course_description,
+                'course_price' =>  $model->course_price,
+                'course_preview' =>  $model->course_preview,
+                'course_isFree' =>  $model->course_isFree,
+            ];
+
+            ClientHelper::sendRequest('PUT','course/'.$id, $data);
 
             return $this->redirect(['view', 'id' => $course['id']]);
         }
@@ -142,7 +172,13 @@ class CourseController extends Controller
      */
     public function actionDelete($id)
     {
-        ClientHelper::getInfo('DELETE', 'course/'.$id);
+       $course = ClientHelper::sendRequest('GET', 'course/'.$id.'?expand=user_id');
+
+            if (!($course['user_id'] == Yii::$app->user->getId()) && !Yii::$app->user->can('admin')) {
+            throw new ForbiddenHttpException("Хм... Нет доступа!");
+        }
+
+        ClientHelper::sendRequest('DELETE', 'course/'.$id);
 
         return $this->redirect(['index']);
     }

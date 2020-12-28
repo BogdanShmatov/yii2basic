@@ -76,8 +76,9 @@ AdminAsset::register($this);
                 ['label' => 'Пользователи', 'url' => ['/rbac/default/index']],
                 ['label' => 'Курсы', 'url' => ['/admin/course/index']],
                 ['label' => 'Категории', 'url' => ['/admin/category/index']],
-                ['label' => 'Посты', 'url' => ['/admin/post/index']],
+                ['label' => 'Заметки', 'url' => ['/admin/post/index']],
                 ['label' => 'Комментарии', 'url' => ['/admin/comment/index']],
+                ['label' => 'Слайдер', 'url' => ['/admin/slider/index']],
                 ['label' => 'USER mode', 'url' => ['/site/my']],
 
             ];

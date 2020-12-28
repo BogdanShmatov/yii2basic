@@ -35,7 +35,7 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
-        $categories =  ClientHelper::getInfo('GET', 'category');
+        $categories =  ClientHelper::sendRequest('GET', 'category');
 
         return $this->render('index',['categories'=>$categories]);
     }
@@ -48,7 +48,7 @@ class CategoryController extends Controller
      */
     public function actionView($id)
     {
-        $category =  ClientHelper::getInfo('GET', 'category/'.$id);
+        $category =  ClientHelper::sendRequest('GET', 'category/'.$id);
 
         return $this->render('view', ['category' => $category]);
     }
@@ -64,8 +64,9 @@ class CategoryController extends Controller
 
         if ($model->load(Yii::$app->request->post()))
         {
-            $data = Yii::$app->request->post();
-            ClientHelper::postCategory('POST',$data);
+            $category['cat_name'] = $model->cat_name;
+            ClientHelper::sendRequest('POST','category', $category);
+
             return $this->redirect(['index']);
         }
 
@@ -85,12 +86,11 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $model = new Category();
-        $category =  ClientHelper::getInfo('GET', 'category/'.$id);
-        $data = Yii::$app->request->post();
+        $category =  ClientHelper::sendRequest('GET', 'category/'.$id);
 
-        if ($model->load($data)) {
-            $data['Category']['id'] = $category['id'];
-            ClientHelper::postCategory('PUT', $data);
+        if ($model->load(Yii::$app->request->post())) {
+            $cat = ['cat_name' => $model->cat_name];
+            ClientHelper::sendRequest('PUT','category/'. $id, $cat);
 
             return $this->redirect(['view', 'id' => $category['id']]);
         }
@@ -110,7 +110,7 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        ClientHelper::getInfo('DELETE', 'category/'.$id);
+        ClientHelper::sendRequest('DELETE', 'category/'.$id);
 
         return $this->redirect(['index']);
     }

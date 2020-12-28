@@ -21,7 +21,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'course_name')->textInput(['maxlength' => true])->label('Название курса') ?>
 
     <?= $form->field($model, 'course_author')->textInput(['maxlength' => true])->label('Автор') ?>
-   <?php $items = ArrayHelper::map($categories,'id','cat_name');
+   <?php
+   // ПЕРЕНЕСТИ В КОНТРОЛЛЕР
+   $items = ArrayHelper::map($categories,'id','cat_name');
 
     $params = [
     'prompt' => 'Выберите категорию...'

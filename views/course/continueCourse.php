@@ -1,5 +1,8 @@
 <?php
 
+use yii\helpers\Url;
+
+$courseId = $courseSingle['id'];
 ?>
 <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('../images/bg_1.jpg')">
     <div class="container">
@@ -31,16 +34,44 @@
                             $lesson = $courseSingle['lessons0'];
                                     ?>
                                     <div class="lesson">
-                                        <input type="checkbox" >
+                                        <input id="checkbox" type="checkbox" data-id=" <?php echo $lesson[$i]['id'] ?>" <?php  if((in_array($lesson[$i]['id'], $progress))) echo 'checked="checked" class="pointer-events-none"'  ?>>
                                         <?php echo $lesson[$i]['lesson_name'] ?>
                                     </div>
                             <?php  } ?>
                     </div>
                 </div>
+                <a style="width: 100%" href="<?= Url::toRoute(['delete-progress', 'id'=>$courseSingle['id']]);?>" class="btn btn-danger rounded-0 px-5">Сбросить прогресс ;)</a>
             </div>
         </div>
     </div>
 </div>
+
+
+<?php
+$js = <<< JS
+let course_id = $courseId;
+let checkboxes = document.querySelectorAll('#checkbox');
+
+checkboxes.forEach(item =>{
+    item.addEventListener('click', function (evt) { 
+         $.ajax({
+            // Метод отправки данных (тип запроса)
+            type : 'POST',
+            // URL для отправки запроса
+            url : '../save-progress/',
+            // Данные формы
+            data : {'course_id': course_id,
+                    'lesson_id': item.dataset.id,},
+        })
+       item.classList.add('pointer-events-none');
+     })
+}
+    
+)
+JS;
+$this->registerJs( $js, $position = yii\web\View::POS_READY );
+?>
+
 
 
 

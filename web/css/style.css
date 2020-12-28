@@ -1183,4 +1183,7 @@ a.cat_btn {
   text-align: center;
   color: #FFFFFF;
 }
+.pointer-events-none {
+  pointer-events: none;
+}
 

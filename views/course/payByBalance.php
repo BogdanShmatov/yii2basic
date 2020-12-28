@@ -3,7 +3,8 @@
 
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
-use yii\helpers\Url; ?>
+use yii\helpers\Url;
+?>
 
 <div class="site-section">
     <div class="container">

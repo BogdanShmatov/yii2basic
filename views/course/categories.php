@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 $this->title = 'Category';
-$userId = Yii::$app->user->getId();
+
 ?>
 <div></div>
 
@@ -18,7 +18,7 @@ $userId = Yii::$app->user->getId();
     <div class="container" id="container">
 
         <div class="row mb-5 justify-content-center text-center">
-            <?php foreach($categories as $category): ?>
+            <?php foreach ($categories as $category): ?>
 
                 <?= Html::a($category['cat_name'], ['course/get-categories','id' => $category['id']], ['class' => 'cat_btn']) ?>
 
@@ -28,28 +28,46 @@ $userId = Yii::$app->user->getId();
 
 
         <div class="row" id="course-by-category">
-            <?php foreach($coursesCat as $course):
-                $courseUser = \app\models\CourseUser::findOne(['course_id' => $course['id'], 'user_id' => $userId]); ?>
+            <?php foreach ($coursesCat as $course):?>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="course-1-item" >
                         <figure class="thumnail">
-                            <?php if (!$courseUser) {?>
-                            <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>"><?php } else {?>
-                                <a href="<?= Url::toRoute(['continue-course', 'id'=>$course['id']]);?>"> <?php }?>
+                            <?php if (in_array($course['id'], $courseUser)) {?>
+                            <a href="<?= Url::toRoute(['continue-course', 'id'=>$course['id']]);?>">
+                                <?php } else {?>
+
+                                <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>">
+
+
+
+                                <?php }?>
+
                                     <img src="<?php echo $course['course_img_url']?>" alt="Image" class="img-fluid"></a>
                                 <div class="price">$
                                     <?php if($course['course_isFree']){ ?> Free <?php } else echo $course['course_price']?></div>
                                 <div class="category">
-                                    <h3>  <?php if (!$courseUser) {?>
-                                        <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>"><?php } else {?>
-                                            <a href="<?= Url::toRoute(['continue-course', 'id'=>$course['id']]);?>"> <?php }?>
+
+                                    <h3>  <?php if (in_array($course['id'], $courseUser)) {?>
+                                            <a href="<?= Url::toRoute(['continue-course', 'id'=>$course['id']]);?>">
+
+                                            <?php } else {?>
+                                                <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>">
+
+                                                <?php }?>
                                                 <?php echo $course['course_name'];?></a></h3>
                                 </div>
                         </figure>
                         <div class="course-1-content pb-4" >
-                            <?php if (!$courseUser) {?>
-                            <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>"><?php } else {?>
-                                <a href="<?= Url::toRoute(['continue-course', 'id'=>$course['id']]);?>"> <?php }?>
+                            <?php if (in_array($course['id'], $courseUser)) {?>
+
+                            <a href="<?= Url::toRoute(['continue-course', 'id'=>$course['id']]);?>">
+
+                                <?php } else {?>
+                            <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>">
+
+
+                                    <?php }?>
+
                                     <h2><?php echo $course['course_description']?></h2></a>
 
                                 <div class="rating text-center mb-3">
@@ -62,7 +80,7 @@ $userId = Yii::$app->user->getId();
                                 <p><?php echo $course['cat']['cat_name']?></p>
                                 <p class="desc mb-4" ><?php echo $course['course_author']?></p>
                                 <?php
-                                if ($courseUser) {
+                                if (in_array($course['id'], $courseUser)) {
                                     ?>
                                     <p><a href="<?= Url::toRoute([
                                             'continue-course',

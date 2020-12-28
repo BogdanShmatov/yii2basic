@@ -4,7 +4,7 @@ use app\models\User;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
-$user = User::findOne(Yii::$app->user->getId());
+
 ?>
 
 <div class="site-section">
@@ -68,7 +68,7 @@ $user = User::findOne(Yii::$app->user->getId());
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 mb-4">
+            <div class="col-lg-4 col-md-6 mb-4" id="user-balance-info">
                 <div class="course-1-item " style="text-align: left">
                     <div class="course-1-content pb-4" style="text-align: left">
                         <h2>Сведения о балансе:</h2>

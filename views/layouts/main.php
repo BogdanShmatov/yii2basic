@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 AppAsset::register($this);
 
-$categories = \app\helpers\ClientHelper::postCategory('GET', 'category');
+$categories = $this->params['categories'];
 
 ?>
 
@@ -92,7 +92,7 @@ $categories = \app\helpers\ClientHelper::postCategory('GET', 'category');
 
 
                                 <li class="has-children">
-                                    <a href="/profile/edit-profile/" class="small mr-3">
+                                    <a href="/profile/index/" class="small mr-3">
                                         <img src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" class="img-circle avatar" style="width: 50px; height: 50px; border-radius: 50px" alt="user name"/>
                                         <?php echo Yii::$app->user->identity->username ?></a>
                                     <ul class="dropdown">

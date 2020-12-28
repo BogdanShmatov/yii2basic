@@ -2,19 +2,30 @@
 
 namespace app\controllers;
 
+use Yii;
+
 use app\models\Card;
 use app\models\CardUser;
 use app\models\Comment;
 use app\models\PayByCardForm;
-use Yii;
+use app\models\Post;
 use app\models\User;
-use yii\web\Session;
+use app\helpers\ClientHelper;
 
 class ProfileController extends \yii\web\Controller
 {
+    public function init()
+    {
+        parent::init();
+        $this->view->params['categories'] = ClientHelper::sendRequest('GET', 'category');
+
+    }
+
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = Post::findAll(['user_id' => Yii::$app->user->getId()]);
+        $user = User::findOne(Yii::$app->user->getId());
+        return $this->render('index', ['model' => $model, 'user' => $user]);
     }
 
     public function actionEditProfile()
@@ -29,7 +40,7 @@ class ProfileController extends \yii\web\Controller
 
                 Yii::$app->session->setFlash('success', 'Данные сохранены!! Теперь ты - '.$model->name.' '.$model->last_name);
 
-                return $this->redirect(['course/get-courses']);
+                return $this->redirect(['profile/index']);
             }
         }
         return $this->render('profile', ['model' => $model]);
@@ -39,16 +50,14 @@ class ProfileController extends \yii\web\Controller
     public function actionViewBalance()
     {
         $model = new PayByCardForm();
-
+        $user = User::findOne(Yii::$app->user->getId());
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->enrollBalance()) {
 
-            Yii::$app->session->setFlash('success', 'Баланс пополнен!!');
-
-            return $this->redirect(['course/get-courses']);
+            return $this->redirect(['profile/index']);
 
         }
 
-        return $this->render('balance',['model'=>$model]);
+        return $this->render('balance',['model'=>$model, 'user' => $user]);
     }
 
     public function actionViewMyCards()
@@ -82,5 +91,6 @@ class ProfileController extends \yii\web\Controller
 
         return $this->redirect(['profile/view-my-comments']);
     }
+
 
 }

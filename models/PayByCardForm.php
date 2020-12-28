@@ -114,6 +114,8 @@ class PayByCardForm extends Model
             $card->update();
             $user->update();
 
+            return $user;
+
         } else return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
 
     }

@@ -17,11 +17,12 @@ class Course extends Model
     public $course_isFree;
     public $id;
     public $cat_id;
+    public $user_id;
 
     public function rules()
     {
         return [
-            [['cat_id', 'course_price'], 'integer'],
+            [['cat_id', 'course_price', 'user_id'], 'integer'],
             ['id', 'integer'],
             ['course_isFree', 'boolean'],
             [['course_name', 'course_author', 'course_img_url', 'course_video_url', 'course_description', 'course_price', 'course_preview'], 'required'],

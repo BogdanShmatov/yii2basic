@@ -28,7 +28,7 @@ $this->title = 'My courses';
                         <div class="price"><a href="<?= Url::toRoute(['course/continue-course', 'id'=>$course['id']]);?>">Продолжить</a></div>
                         <div class="category"><h3><?php echo $course['course_name'] ?></h3></div>
                         <div class="progress" style="border-radius: 0; height: 5px;" >
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%; border-radius: 0;
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo $course['progress']?>%; border-radius: 0;
                          background-image: linear-gradient(to right, #051937, #004d7a, #008793);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </figure>

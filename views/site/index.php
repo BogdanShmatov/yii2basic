@@ -5,24 +5,13 @@
 $this->title = 'Academic';
 ?>
 <div class="hero-slide owl-carousel site-blocks-cover">
-    <div class="intro-section" style="background-image: url('images/hero_1.jpg');">
+    <?php for($i = 0, $size = count($images); $i < $size; $i++) {
+        $intro = ['Academics', 'You Can Learn', 'Free Education' ];?>
+    <div class="intro-section" style="background-image: url('<?php echo $images[$i]['img_url'] ?>');">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
-                    <h1>Academics
-                        <div class="col-12">
-                            <a href="course/get-courses/" class="btn btn-primary btn-lg px-5">Все курсы </a>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="intro-section" style="background-image: url('images/hero_1.jpg');">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
-                    <h1>You Can Learn</h1>
+                    <h1><?php echo $intro[rand(0, 2)]; ?></h1>
                     <div class="col-12">
                         <a href="course/get-courses/" class="btn btn-primary btn-lg px-5">Все курсы </a>
                     </div>
@@ -30,7 +19,7 @@ $this->title = 'Academic';
             </div>
         </div>
     </div>
-
+    <?php } ?>
 </div>
 <div></div>
 

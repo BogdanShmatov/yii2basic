@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\SliderImage;
+use app\models\UserProgressCourse;
 use Yii;
 use app\helpers\ClientHelper;
 use app\models\CourseUser;
@@ -12,6 +14,7 @@ use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\VerifyEmailForm;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\base\InvalidArgumentException;
@@ -23,6 +26,7 @@ class SiteController extends Controller
 
         parent::init();
 
+        $this->view->params['categories'] = ClientHelper::sendRequest('GET', 'category');
 
     }
     public function actions()
@@ -58,7 +62,8 @@ class SiteController extends Controller
     }
     public function actionIndex()
     {
-        return $this->render('index');
+        $images = SliderImage::find()->all();
+        return $this->render('index', ['images'=>$images]);
     }
 
     public function actionMy()
@@ -67,7 +72,16 @@ class SiteController extends Controller
             'user_id' => Yii::$app->user->getId(),
         ]);
 
-        $courses = ClientHelper::getCoursesById($courseUser, '?expand=lessons0');
+        $course_id = [];
+        for ($i = 0, $size = count($courseUser); $i < $size; $i++) {
+            $course_id[$i] = $courseUser[$i]['course_id'];
+        }
+        $courses = [];
+        for ($i = 0, $size = count($course_id); $i < $size; $i++) {
+            $courses[$i] = ClientHelper::sendRequest('GET', 'course/' . $course_id[$i] . '?expand=lessons0');
+            $progress = count($coursesProgress = UserProgressCourse::findAll(['course_id' =>$course_id[$i] ,'user_id' => Yii::$app->user->getId()]))*100;
+            $courses[$i]['progress'] = $progress/count($courses[$i]['lessons0']);
+        }
 
         return $this->render('my', ['courses' => $courses, 'courseUser' => $courseUser]);
     }
