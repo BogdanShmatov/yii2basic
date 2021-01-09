@@ -41,8 +41,18 @@ class CourseController extends Controller
      */
     public function actionIndex()
     {
-        $courses =  ClientHelper::sendRequest('GET', 'course');
+        $coursesAll =  ClientHelper::sendRequest('GET', 'course?expand=user_id');
+        if (Yii::$app->user->can('updateCourse')) {
+            return $this->render('index',['courses'=>$coursesAll]);
+        }
 
+        $courses = [];
+        foreach ($coursesAll as $i => $course) {
+            if ($course['user_id'] == Yii::$app->user->getId()) {
+                $courses[$i] = $course;
+            }
+
+        }
         return $this->render('index',['courses'=>$courses]);
     }
 

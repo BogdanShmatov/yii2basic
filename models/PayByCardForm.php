@@ -67,7 +67,7 @@ class PayByCardForm extends Model
 
     {   $card = Card::findOne(['card_number' => $this->cardNumber]);
 
-        if ($courses['course_price'] === 0 || $card->card_balance >= $courses['course_price']) {
+        if ($courses['course_price'] == 0 || $card->card_balance >= $courses['course_price']) {
 
             $order = new Order();
             $order->user_id = Yii::$app->user->getId();

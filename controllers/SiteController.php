@@ -14,7 +14,6 @@ use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\VerifyEmailForm;
 use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\base\InvalidArgumentException;

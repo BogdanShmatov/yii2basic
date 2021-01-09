@@ -25,7 +25,7 @@ class PayByBalance extends Model
     {
 
 
-        if ($user->balance >= $course['course_price'] || $course['course_price'] === 0) {
+        if ($user->balance >= $course['course_price'] || $course['course_price'] == 0) {
 
             $order = new Order();
             $order->user_id = $user->id;
