@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\User;
 use Yii;
 use app\models\Category;
 use yii\web\Controller;
@@ -61,11 +62,12 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $model = new Category();
-
+        $user = User::findOne(Yii::$app->user->getId());
+        $accessToken = $user->auth_key;
         if ($model->load(Yii::$app->request->post()))
         {
             $category['cat_name'] = $model->cat_name;
-            ClientHelper::sendRequest('POST','category', $category);
+            ClientHelper::sendRequest('POST','category', $category, $accessToken);
 
             return $this->redirect(['index']);
         }
@@ -87,10 +89,11 @@ class CategoryController extends Controller
     {
         $model = new Category();
         $category =  ClientHelper::sendRequest('GET', 'category/'.$id);
-
+        $user = User::findOne(Yii::$app->user->getId());
+        $accessToken = $user->auth_key;
         if ($model->load(Yii::$app->request->post())) {
             $cat = ['cat_name' => $model->cat_name];
-            ClientHelper::sendRequest('PUT','category/'. $id, $cat);
+            ClientHelper::sendRequest('PUT','category/'. $id, $cat, $accessToken);
 
             return $this->redirect(['view', 'id' => $category['id']]);
         }
@@ -110,7 +113,9 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        ClientHelper::sendRequest('DELETE', 'category/'.$id);
+        $user = User::findOne(Yii::$app->user->getId());
+        $accessToken = $user->auth_key;
+        ClientHelper::sendRequest('DELETE', 'category/'.$id, '', $accessToken );
 
         return $this->redirect(['index']);
     }

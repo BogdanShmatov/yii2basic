@@ -4,6 +4,7 @@ namespace app\modules\admin\controllers;
 
 use app\models\Lesson;
 use app\models\Model;
+use app\models\User;
 use Yii;
 use app\models\Course;
 use yii\bootstrap\ActiveForm;
@@ -105,10 +106,13 @@ class CourseController extends Controller
                 $data2 = Yii::$app->request->post();
                 $lessons = $data2['Lesson'];
 
-                $respCreateCourse = ClientHelper::sendRequest('POST','course', $data);
+                $user = User::findOne(Yii::$app->user->getId());
+                $accessToken = $user->auth_key;
+
+                $respCreateCourse = ClientHelper::sendRequest('POST','course', $data, $accessToken);
                     for ($i = 0, $size = count($lessons); $i < $size; $i++){
                         $lessons[$i]['course_id'] = $respCreateCourse['id'];
-                        ClientHelper::sendRequest('POST','lesson', $lessons[$i]);
+                        ClientHelper::sendRequest('POST','lesson', $lessons[$i], $accessToken);
                     }
                     Yii::$app->session->setFlash('success', 'Данные успешно сохранены ;)');
 
@@ -157,8 +161,9 @@ class CourseController extends Controller
                 'course_preview' =>  $model->course_preview,
                 'course_isFree' =>  $model->course_isFree,
             ];
-
-            ClientHelper::sendRequest('PUT','course/'.$id, $data);
+            $user = User::findOne(Yii::$app->user->getId());
+            $accessToken = $user->auth_key;
+            ClientHelper::sendRequest('PUT','course/'.$id, $data, $accessToken);
 
             return $this->redirect(['view', 'id' => $course['id']]);
         }
@@ -188,7 +193,10 @@ class CourseController extends Controller
             throw new ForbiddenHttpException("Хм... Нет доступа!");
         }
 
-        ClientHelper::sendRequest('DELETE', 'course/'.$id);
+        $user = User::findOne(Yii::$app->user->getId());
+        $accessToken = $user->auth_key;
+
+        ClientHelper::sendRequest('DELETE', 'course/'.$id, null, $accessToken);
 
         return $this->redirect(['index']);
     }
