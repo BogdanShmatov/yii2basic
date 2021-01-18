@@ -61,7 +61,7 @@ class SliderController extends Controller
     {
         $model = new SliderImage();
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->file = UploadedFile::getInstance($model, 'file');
             if ($model->upload()) {
@@ -88,7 +88,7 @@ class SliderController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() && $model->validate()) {
             $model->file = UploadedFile::getInstance($model, 'file');
             if ($model->upload()) {
 
@@ -111,17 +111,12 @@ class SliderController extends Controller
      */
     public function actionDelete($id)
     {
-
-
             $model = $this->findModel($id);
             $imgName = $model->img_url;
             unlink(Yii::getAlias('').$imgName);
             $model->delete();
 
             return $this->redirect(['index']);
-
-
-
     }
 
     /**

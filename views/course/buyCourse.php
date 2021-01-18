@@ -27,7 +27,7 @@ use yii\helpers\Url;
                           <a href="<?= Url::toRoute(['pay-by-card', 'id'=>$course['id']]);?>"  class="btn btn-primary btn-lg px-5">Картой </a>
                       </div>
                       <div class="col-6">
-                          <a href="<?= Url::toRoute(['pay-by-balance', 'id'=>$course['id'], 'user_id'=>Yii::$app->user->id]);?>" class="btn btn-primary btn-lg px-5">С баланса </a>
+                          <a href="<?= Url::toRoute(['pay-by-balance', 'id'=>$course['id']]);?>" class="btn btn-primary btn-lg px-5">С баланса </a>
                     </div>
                   </div>
                     </div>

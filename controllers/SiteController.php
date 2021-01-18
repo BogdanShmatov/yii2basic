@@ -2,18 +2,21 @@
 
 namespace app\controllers;
 
+use app\models\PersonalInfo;
 use app\models\SliderImage;
+use app\models\User;
 use app\models\UserProgressCourse;
 use Yii;
-use app\helpers\ClientHelper;
+use app\common\helpers\ClientHelper;
 use app\models\CourseUser;
 use app\models\ResendVerificationEmailForm;
-use app\models\Signup as SignupForm;
-use app\models\Login as LoginForm;
+use mdm\admin\models\form\Signup as SignupForm;
+use mdm\admin\models\form\Login  as LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\VerifyEmailForm;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\base\InvalidArgumentException;
@@ -67,22 +70,19 @@ class SiteController extends Controller
 
     public function actionMy()
     {
-        $courseUser = CourseUser::findAll([
+        $coursesUser = CourseUser::findAll([
             'user_id' => Yii::$app->user->getId(),
         ]);
 
-        $course_id = [];
-        for ($i = 0, $size = count($courseUser); $i < $size; $i++) {
-            $course_id[$i] = $courseUser[$i]['course_id'];
-        }
+        $course_id = ArrayHelper::getColumn($coursesUser, 'course_id');
         $courses = [];
-        for ($i = 0, $size = count($course_id); $i < $size; $i++) {
-            $courses[$i] = ClientHelper::sendRequest('GET', 'course/' . $course_id[$i] . '?expand=lessons0');
-            $progress = count($coursesProgress = UserProgressCourse::findAll(['course_id' =>$course_id[$i] ,'user_id' => Yii::$app->user->getId()]))*100;
+        foreach ($course_id as $i => $id) {
+            $courses[$i] = ClientHelper::sendRequest('GET', 'course/' . $id . '?expand=lessons0');
+            $progress = count($coursesProgress = UserProgressCourse::findAll(['course_id' =>$id ,'user_id' => Yii::$app->user->getId()]))*100;
             $courses[$i]['progress'] = $progress/count($courses[$i]['lessons0']);
         }
 
-        return $this->render('my', ['courses' => $courses, 'courseUser' => $courseUser]);
+        return $this->render('my', ['courses' => $courses, 'courseUser' => $coursesUser]);
     }
 
     public function actionSignup()
@@ -90,9 +90,11 @@ class SiteController extends Controller
         $model = new SignupForm();
             if ($model->load(Yii::$app->request->post()) && $model->signup()) {
 
-                Yii::$app->session->setFlash('success', 'Спасибо за регистрацию! Пожалуйста проверь свой почтовый ящик, для верификации.');
-
-                return $this->goHome();
+                $login = new LoginForm();
+                $login->username = $model->username;
+                $login->password = $model->password;
+                $login->login();
+                return $this->redirect(['site/add-personal-info']);
             }
 
         return $this->render('signup', [
@@ -130,6 +132,20 @@ class SiteController extends Controller
             Yii::$app->user->logout();
             return $this->redirect(['login']);
         }
+    }
+
+    public function actionAddPersonalInfo()
+    {
+        $personalInfo = new PersonalInfo();
+
+        if ($personalInfo->load(Yii::$app->request->post()) && $personalInfo->validate()) {
+            $user = User::findOne(Yii::$app->user->getId());
+            $user->name = $personalInfo->name;
+            $user->last_name = $personalInfo->last_name;
+            $user->update();
+            return $this->redirect(['site/my']);
+        }
+        return $this->render('personalInfo', ['personalInfo' => $personalInfo]);
     }
 
     public function actionRequestPasswordReset()

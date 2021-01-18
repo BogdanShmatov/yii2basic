@@ -1,5 +1,6 @@
 <?php
 
+use app\common\helpers\ButtonHelper;
 use yii\helpers\Url;
 
 $this->title = 'Courses';
@@ -10,13 +11,10 @@ $this->title = 'Courses';
           <div class="row align-items-end">
             <div class="col-lg-7">
               <h2 class="mb-0"><?= $this->title ?></h2>
-
-
             </div>
           </div>
         </div>
       </div>
-
     <div class="site-section">
         <div class="container">
             <div class="row">
@@ -24,13 +22,14 @@ $this->title = 'Courses';
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="course-1-item" >
                             <figure class="thumnail">
-                                <?php if (in_array($course['id'], $courseUser)) {?>
+                                <?php
+                                if (in_array($course['id'], $courseUser)) {?>
+
                                 <a href="<?= Url::toRoute(['continue-course', 'id'=>$course['id']]);?>">
-                                    <?php } else {?>
+
+                                <?php } else {?>
 
                                     <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>">
-
-
 
                                         <?php }?>
 
@@ -57,7 +56,6 @@ $this->title = 'Courses';
                                     <?php } else {?>
                                     <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>">
 
-
                                         <?php }?>
 
                                         <h2><?php echo $course['course_description']?></h2></a>
@@ -71,23 +69,30 @@ $this->title = 'Courses';
                                     </div>
                                     <p><?php echo $course['cat']['cat_name']?></p>
                                     <p class="desc mb-4" ><?php echo $course['course_author']?></p>
+
                                     <?php
+                                    //хелпер
                                     if (in_array($course['id'], $courseUser)) {
-                                        ?>
-                                        <p><a href="<?= Url::toRoute([
-                                                'continue-course',
-                                                'id'=>$course['id']]);?>" class="btn btn-primary px-4">Продолжить</a></p>
 
-                                    <?php } else if ($course['course_isFree']) { ?>
-                                        <p><a href="<?= Url::toRoute([
-                                                'buy-course',
-                                                'id'=>$course['id']]);?>" class="btn btn-primary px-4">В коллекцию</a></p>
+                                        echo ButtonHelper::createButton(Url::toRoute([
+                                            'continue-course',
+                                            'id' => $course['id']]),
+                                            'Продолжить');
 
-                                    <?php  } else {?>
-                                        <p><a href="<?= Url::toRoute([
-                                                'buy-course',
-                                                'id'=>$course['id']]);?>" class="btn btn-primary px-4">Купить</a></p> <?php  } ?>
+                                    } else if ($course['course_isFree']) {
 
+                                        echo ButtonHelper::createButton(Url::toRoute([
+                                            'buy-course',
+                                            'id' => $course['id']]),
+                                            'В коллекцию');
+
+                                    } else {
+
+                                        echo ButtonHelper::createButton(Url::toRoute([
+                                            'buy-course',
+                                            'id' => $course['id']]),
+                                            'Купить');
+                                        } ?>
                             </div>
                         </div>
                     </div>

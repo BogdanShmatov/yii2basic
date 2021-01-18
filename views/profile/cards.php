@@ -7,6 +7,11 @@ use yii\widgets\Pjax;
 <div class="site-section">
     <div class="container">
         <?php if ($model) { ?>
+            <div class="row mb-5 justify-content-center text-center">
+                <div class="col-lg-6 mb-5">
+                    <h1>Ваши карты! :)</h1>
+                </div>
+            </div>
         <div class="row">
         <?php foreach ($model as $card): ?>
         <div class="col-lg-4 col-md-6 mb-4">
@@ -21,7 +26,8 @@ use yii\widgets\Pjax;
         </div>
     </div>
 </div>
-        <?php endforeach; } else { ?></div>
+
+        <?php endforeach;  ?> </div><?php } else { ?>
             <div class="row mb-5 justify-content-center text-center">
                 <div class="col-lg-6 mb-5">
                     <h1>Нет добавленных карт! ;(</h1>

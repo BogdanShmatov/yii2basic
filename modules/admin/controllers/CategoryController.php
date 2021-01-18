@@ -8,7 +8,7 @@ use app\models\Category;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\helpers\ClientHelper;
+use app\common\helpers\ClientHelper;
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -47,7 +47,7 @@ class CategoryController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id)
     {
         $category =  ClientHelper::sendRequest('GET', 'category/'.$id);
 
@@ -64,7 +64,7 @@ class CategoryController extends Controller
         $model = new Category();
         $user = User::findOne(Yii::$app->user->getId());
         $accessToken = $user->auth_key;
-        if ($model->load(Yii::$app->request->post()))
+        if ($model->load(Yii::$app->request->post()) && $model->validate())
         {
             $category['cat_name'] = $model->cat_name;
             ClientHelper::sendRequest('POST','category', $category, $accessToken);
@@ -85,13 +85,13 @@ class CategoryController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = new Category();
         $category =  ClientHelper::sendRequest('GET', 'category/'.$id);
         $user = User::findOne(Yii::$app->user->getId());
         $accessToken = $user->auth_key;
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $cat = ['cat_name' => $model->cat_name];
             ClientHelper::sendRequest('PUT','category/'. $id, $cat, $accessToken);
 
@@ -111,7 +111,7 @@ class CategoryController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id)
     {
         $user = User::findOne(Yii::$app->user->getId());
         $accessToken = $user->auth_key;

@@ -96,7 +96,9 @@ class Card extends \yii\db\ActiveRecord
 
                 return true;
 
-            } else return false;
+            } else {
+            return false;
+        }
 
     }
 }

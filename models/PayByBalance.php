@@ -23,8 +23,6 @@ class PayByBalance extends Model
 
     public function createOrder($course, $user)
     {
-
-
         if ($user->balance >= $course['course_price'] || $course['course_price'] == 0) {
 
             $order = new Order();
@@ -43,7 +41,9 @@ class PayByBalance extends Model
             $courseUser->save();
 
             return true;
-        } else return $this->addError('message', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
+        } else {
+            return $this->addError('message', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
+        }
 
     }
 }

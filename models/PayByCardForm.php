@@ -95,7 +95,9 @@ class PayByCardForm extends Model
 
             return true;
 
-        } else return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
+        } else {
+            return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
+        }
 
 
 
@@ -116,7 +118,9 @@ class PayByCardForm extends Model
 
             return $user;
 
-        } else return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
+        } else {
+            return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
+        }
 
     }
 

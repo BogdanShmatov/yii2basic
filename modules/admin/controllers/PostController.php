@@ -67,7 +67,7 @@ class PostController extends Controller
     {
         $model = new Post();
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $model->user_id = Yii::$app->user->getId();
             if ($model->save()) {
@@ -87,14 +87,14 @@ class PostController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = $this->findModel($id);
 
         if (!Yii::$app->user->can('updatePost', ['post' => $model])) {
             throw new ForbiddenHttpException("Хм... Нет доступа!");
         }
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() && $model->validate()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -110,7 +110,7 @@ class PostController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id)
     {
         $model = $this->findModel($id);
 

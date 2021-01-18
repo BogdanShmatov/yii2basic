@@ -3,18 +3,15 @@
 namespace app\modules\admin\controllers;
 
 use app\models\Lesson;
-use app\models\Model;
 use app\models\User;
 use Yii;
 use app\models\Course;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\helpers\ClientHelper;
-use yii\web\Response;
+use app\common\helpers\ClientHelper;
+
 
 /**
  * CourseController implements the CRUD actions for Course model.
@@ -63,7 +60,7 @@ class CourseController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView(int $id)
     {
 
         $course = ClientHelper::sendRequest('GET', 'course/'.$id);
@@ -90,7 +87,7 @@ class CourseController extends Controller
 
             // Получаем данные модели из запроса
 
-            if ($model->load(Yii::$app->request->post())) {
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
                 $data = [
                     'course_name' =>  $model->course_name,
                     'cat_id' =>  $model->cat_id,
@@ -135,7 +132,7 @@ class CourseController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $model = new Course();
         $modelsLessons = [new Lesson()];
@@ -147,7 +144,7 @@ class CourseController extends Controller
         if (!($course['user_id'] == Yii::$app->user->getId()) && !Yii::$app->user->can('admin')) {
             throw new ForbiddenHttpException("Хм... Нет доступа!");
         }
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->id = $course['id'];
 
             $data = [
@@ -185,7 +182,7 @@ class CourseController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id)
     {
        $course = ClientHelper::sendRequest('GET', 'course/'.$id.'?expand=user_id');
 

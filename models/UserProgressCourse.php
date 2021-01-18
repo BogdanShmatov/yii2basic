@@ -57,4 +57,5 @@ class UserProgressCourse extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['id' => 'user_id']);
     }
+
 }

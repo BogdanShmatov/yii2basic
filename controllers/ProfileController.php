@@ -10,7 +10,11 @@ use app\models\Comment;
 use app\models\PayByCardForm;
 use app\models\Post;
 use app\models\User;
-use app\helpers\ClientHelper;
+use app\common\helpers\ClientHelper;
+use yii\base\InvalidArgumentException;
+use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 class ProfileController extends \yii\web\Controller
 {
@@ -20,7 +24,14 @@ class ProfileController extends \yii\web\Controller
         $this->view->params['categories'] = ClientHelper::sendRequest('GET', 'category');
 
     }
-
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
     public function actionIndex()
     {
         $model = Post::findAll(['user_id' => Yii::$app->user->getId()]);
@@ -76,20 +87,33 @@ class ProfileController extends \yii\web\Controller
         return $this->render('cards',['model'=>$cards]);
     }
 
-    public function actionDeleteCard($id)
+    public function actionDeleteCard(int $id)
     {
+        if (!is_numeric($id)) {
+            throw new BadRequestHttpException();
+        }
+        $cardUserId = CardUser::findAll(['user_id' => Yii::$app->user->getId()]);
+        $cards = ArrayHelper::getColumn($cardUserId,'id');
+        if (!in_array($id, $cards)) {
+            throw new NotFoundHttpException('Такая карта не добавленна');
+        }
         $userCard = CardUser::findOne($id);
         $userCard->delete();
 
         return $this->redirect(['profile/view-my-cards']);
     }
 
-    public function actionDeleteComment($id)
+    public function actionDeleteComment(int $id)
     {
+        if (!is_numeric($id)) {
+            throw new BadRequestHttpException();
+        }
         $comment = Comment::findOne($id);
-        $comment->delete();
+        if ($comment->user_id == Yii::$app->user->getId()) {
+            $comment->delete();
+        }
 
-        return $this->redirect(['profile/view-my-comments']);
+        return $this->redirect(['site/my']);
     }
 
 
