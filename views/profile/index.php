@@ -14,8 +14,7 @@ use yii\widgets\Pjax;
                         <div class="course-1-content pb-4" style="text-align: left">
                             <h2>Баланс:</h2>
                             <div class="row">
-                                <div class="col-12"> <p>$<?php echo $user->balance?>
-                                    </p></div>
+                                <div class="col-12"> <p><?php echo $user->balance?>KZT</p></div>
                             </div>
                         </div>
                     </div>

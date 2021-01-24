@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\PayByCardForm;
 use app\models\PersonalInfo;
 use app\models\SliderImage;
 use app\models\User;
@@ -70,6 +71,26 @@ class SiteController extends Controller
 
     public function actionMy()
     {
+        $cookies = Yii::$app->request->cookies;
+        if (($cookie = $cookies->get('invoice')) !== null) {
+            $values = $cookie->value;
+            $invoice_id = $values['invoice_id'];
+            $key = $values['key'];
+            $course_id = $values['course_id'];
+            $tpmCourseUser = CourseUser::findOne([
+                'user_id' => Yii::$app->user->getId(),
+                'course_id' => $course_id
+            ]);
+            if ($status = ClientHelper::checkInvoiceStatus($invoice_id, $key) && !$tpmCourseUser) {
+                $course = ClientHelper::sendRequest('GET', 'course/'.$course_id);
+                $model = new PayByCardForm();
+                if ($model->createNewOrder($course, $values)) {
+                    $cookies = Yii::$app->response->cookies;
+                    $cookies->removeAll();
+                    unset($values, $invoice_id, $key, $course_id, $cookie);
+                }
+            }
+        }
         $coursesUser = CourseUser::findAll([
             'user_id' => Yii::$app->user->getId(),
         ]);

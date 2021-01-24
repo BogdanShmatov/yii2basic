@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td><?php echo $course['date']?></td>
                     <td><?php if ($course['course_price'] === 0) {
                         echo  'FREE';
-                        } else echo '$'.$course['course_price']?></td>
+                        } else echo $course['course_price'].' KZT'?></td>
                     <td>
                         <a href="<?= Url::toRoute(['view', 'id'=>$course['id']]);?>" title="View" aria-label="View" data-pjax="0">
                             <span class="glyphicon glyphicon-eye-open"></span></a>

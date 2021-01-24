@@ -10,13 +10,13 @@ use app\models\Comment;
 use app\models\PayByCardForm;
 use app\models\Post;
 use app\models\User;
+use app\models\BalanceEnroll;
 use app\common\helpers\ClientHelper;
-use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
-use yii\web\BadRequestHttpException;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class ProfileController extends \yii\web\Controller
+class ProfileController extends Controller
 {
     public function init()
     {
@@ -60,15 +60,75 @@ class ProfileController extends \yii\web\Controller
 
     public function actionViewBalance()
     {
+        $cookies = Yii::$app->request->cookies;
+        if (($cookie = $cookies->get('balance')) !== null) {
+            $values = $cookie->value;
+            $invoice_id = $values['invoice_id'];
+            $key = $values['key'];
+            $sum = $values['sum'];
+            $operation_id = $values['operation_id'];
+            $tpmBalanceEnroll = BalanceEnroll::findOne([
+                'user_id' => Yii::$app->user->getId(),
+                'sum' => $sum,
+                'invoice_id' => $invoice_id,
+                'key' => $key,
+                'operation_id' => $operation_id
+            ]);
+            if ($status = ClientHelper::checkInvoiceStatus($invoice_id, $key) && !$tpmBalanceEnroll) {
+
+                $model = new PayByCardForm();
+                if ($model->enrollBalance($sum, $values)) {
+                    $cookies = Yii::$app->response->cookies;
+                    $cookies->removeAll();
+                    unset($values, $invoice_id, $key, $course_id, $cookie);
+                }
+            }
+        }
         $model = new PayByCardForm();
         $user = User::findOne(Yii::$app->user->getId());
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->enrollBalance()) {
 
-            return $this->redirect(['profile/index']);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            return $this->redirect(['profile/enroll-balance', 'sum'=>$model->sum]);
 
         }
 
-        return $this->render('balance',['model'=>$model, 'user' => $user]);
+        return $this->render('balance',['model'=>$model, 'user' => $user->balance]);
+    }
+
+    public function actionEnrollBalance(int $sum)
+    {
+
+        $token = ClientHelper::authWooppay('test_merch','A12345678a');
+        $data = [
+            "service_name" => "test_merch_invoice",
+            "reference_id" => time(),
+            "amount" => $sum,
+            "merchant_name" => "test_merch",
+            "request_url"=> "https://www.test.wooppay.com",
+            "back_url"=> "http://academic/profile/view-balance/",
+        ];
+        $invoice  = ClientHelper::createInvoice('/invoice/create', $data, $token);
+        $values = [
+            'invoice_id' => $invoice['response']['invoice_id'],
+            'key' => $invoice['response']['key'],
+            'operation_id' => $invoice['response']['operation_id'],
+            'sum' => $sum
+        ];
+        $cookies = Yii::$app->response->cookies;
+        $cookies->add(new \yii\web\Cookie([
+            'name' => 'balance',
+            'value' => $values,
+        ]));
+        $frame_url = $invoice['operation_url'];
+        $user = User::findOne(Yii::$app->user->getId());
+
+
+        return $this->render('enrollBalance', [
+            'frame_url' => $frame_url,
+            'user' => $user->balance,
+            'sum' => $sum
+            ]);
     }
 
     public function actionViewMyCards()
@@ -83,15 +143,11 @@ class ProfileController extends \yii\web\Controller
 
             }
 
-
         return $this->render('cards',['model'=>$cards]);
     }
 
     public function actionDeleteCard(int $id)
     {
-        if (!is_numeric($id)) {
-            throw new BadRequestHttpException();
-        }
         $cardUserId = CardUser::findAll(['user_id' => Yii::$app->user->getId()]);
         $cards = ArrayHelper::getColumn($cardUserId,'id');
         if (!in_array($id, $cards)) {
@@ -105,9 +161,6 @@ class ProfileController extends \yii\web\Controller
 
     public function actionDeleteComment(int $id)
     {
-        if (!is_numeric($id)) {
-            throw new BadRequestHttpException();
-        }
         $comment = Comment::findOne($id);
         if ($comment->user_id == Yii::$app->user->getId()) {
             $comment->delete();

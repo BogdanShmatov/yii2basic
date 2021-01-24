@@ -27,111 +27,53 @@ class PayByCardForm extends Model
     public function rules()
     {
         return [
-
-            [['cardNumber', 'expMonth', 'expYear', 'cvc', 'cardName'], 'required'],
-
-            [['cardNumber', 'expMonth', 'expYear', 'cvc', 'cardName'], 'default'],
-
-            ['cardNumber', 'number', 'message' => 'Не корректный номер карты'],
-
-            [['cardNumber', 'expMonth', 'expYear', 'cvc', 'cardName'], 'validateCard'],
-
-            ['expMonth', 'number', 'min' => 1, 'max' => 12, 'message' => 'Проверьте введенные данных'],
-
-            ['expYear', 'number', 'min' => 20, 'max' => 25, 'message' => 'Проверьте введенные данных'],
-
-            ['cvc', 'number', 'message' => 'Не корректный cvc'],
-
-            ['cardName', 'string', 'max' => 255],
             ['sum', 'integer'],
-
-            ['saveCard', 'boolean'],
-
         ];
     }
-    public function validateCard($attribute, $params)
+
+    public function createNewOrder($courses, $values)
     {
-        if (!$this->hasErrors()) {
-
-            $card = $this->getCardInfo();
-
-              if (!$card) {
-
-                  $this->addError($attribute, 'Не правильные данные.');
-              }
-        }
-
-    }
-
-    public function createNewOrder($courses)
-
-    {   $card = Card::findOne(['card_number' => $this->cardNumber]);
-
-        if ($courses['course_price'] == 0 || $card->card_balance >= $courses['course_price']) {
-
             $order = new Order();
             $order->user_id = Yii::$app->user->getId();
             $order->course_id = $courses['id'];
             $order->order_total_price = $courses['course_price'];
             $order->order_status = "Завершен";
-            $card->card_balance -=  $order->order_total_price;
-            $card->update();
+            $order->key = $values['key'];
+            $order->operation_id = $values['operation_id'];
+            $order->invoice_id = $values['invoice_id'];;
             $order->save();
 
             $courseUser = new CourseUser();
             $courseUser->user_id = Yii::$app->user->getId();
             $courseUser->course_id = $courses['id'];
             $courseUser->order_id = $order->id;
-            $courseUser->save();
 
-                if ($this->saveCard) {
-
-                        $cardUser = new CardUser();
-                        $cardUser->user_id = Yii::$app->user->getId();
-                        $cardUser->card_id = $card->id;
-
-                        return $cardUser->save();
-                }
-
-            return true;
-
-        } else {
-            return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
-        }
-
-
-
+            if ($courseUser->save()) {
+                return true;
+            }
 
     }
 
-    public function enrollBalance()
+    public function enrollBalance(int $sum, $data)
     {
-        $card = Card::findOne(['card_number' => $this->cardNumber]);
+        $enrollBalance = new BalanceEnroll();
+
+        $enrollBalance->sum = $sum;
+        $enrollBalance->invoice_id = $data['invoice_id'];
+        $enrollBalance->operation_id = $data['operation_id'];
+        $enrollBalance->key = $data['key'];
+        $enrollBalance->status = 'Завершен';
+        $enrollBalance->created_at = gmdate("Y-m-d H:i:s");
+        $enrollBalance->user_id = Yii::$app->user->getId();
+        $enrollBalance->save();
+
         $user = User::findOne(Yii::$app->user->getId());
+        $user->balance += $sum;
 
-        if ($card->card_balance >= $this->sum) {
-
-            $user->balance += $this->sum;
-            $card->card_balance -=  $this->sum;
-            $card->update();
-            $user->update();
-
-            return $user;
-
-        } else {
-            return $this->addError('cardName', 'ОШИБКА ОПЛАТЫ, не достаточно средств!!!');
+        if ( $user->update()) {
+            return true;
         }
 
-    }
-
-    protected function getCardInfo()
-    {
-        if ($this->_card === null) {
-
-            $this->_card = Card::findCard($this->cardNumber, $this->expMonth, $this->expYear, $this->cvc );
-        }
-
-        return $this->_card;
     }
 
 }

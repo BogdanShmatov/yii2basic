@@ -2,20 +2,19 @@
 
 namespace app\controllers;
 
-use phpDocumentor\Reflection\Types\Integer;
 use Yii;
+use app\models\BalanceEnroll;
 use app\models\Comment;
 use app\models\UserProgressCourse;
 use app\models\Order;
 use app\models\PayByBalance;
-use app\models\PayByCardForm;
 use app\models\User;
-use yii\helpers\ArrayHelper;
-use app\common\helpers\ClientHelper;
-use yii\data\ActiveDataProvider;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\helpers\ArrayHelper;
+use app\common\helpers\ClientHelper;
+use yii\data\ActiveDataProvider;
 
 class CourseController extends Controller
 {
@@ -51,20 +50,18 @@ class CourseController extends Controller
 
     public function actionGetCategories(int $id = null)
     {
-            $categories = ClientHelper::sendRequest('GET', 'category');
-            $courses = ClientHelper::sendRequest('GET', 'course');
-            $userId = Yii::$app->user->getId();
-            $courseUser = \app\models\CourseUser::findAll(['user_id' => $userId]);
-            $courseUser = ArrayHelper::getColumn($courseUser, 'course_id');
+        $categories = ClientHelper::sendRequest('GET', 'category');
+        $courses = ClientHelper::sendRequest('GET', 'course');
+        $userId = Yii::$app->user->getId();
+        $courseUser = \app\models\CourseUser::findAll(['user_id' => $userId]);
+        $courseUser = ArrayHelper::getColumn($courseUser, 'course_id');
 
             if (Yii::$app->request->isPjax) {
                 $coursesCat = [];
-                $id = (int) $id;
                     foreach ($courses as $i => $course) {
                         if ($course['cat_id'] === $id) {
                             $coursesCat[$i] = $course;
                         }
-
                     }
 
                 return $this->render('categories',[
@@ -148,17 +145,34 @@ class CourseController extends Controller
 
     public function actionPayByCard(int $id)
     {
-
         $courses = ClientHelper::sendRequest('GET', 'course/'.$id);
-        $model = new PayByCardForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->createNewOrder($courses)) {
-            return $this->redirect(['site/my']);
-        }
+        $token = ClientHelper::authWooppay('test_merch','A12345678a');
+        $data = [
+            "service_name" => "test_merch_invoice",
+            "reference_id" => time(),
+            "amount" => $courses['course_price'],
+            "merchant_name" => "test_merch",
+            "request_url"=> "https://www.test.wooppay.com",
+            "back_url"=> "http://academic/site/my/",
+        ];
+        $invoice  = ClientHelper::createInvoice('/invoice/create', $data, $token);
+        $values = [
+            'invoice_id' => $invoice['response']['invoice_id'],
+            'key' => $invoice['response']['key'],
+            'operation_id' => $invoice['response']['operation_id'],
+            'course_id' => $courses['id']
+        ];
+        $cookies = Yii::$app->response->cookies;
+        $cookies->add(new \yii\web\Cookie([
+            'name' => 'invoice',
+            'value' => $values,
+        ]));
+        $frame_url = $invoice['operation_url'];
 
         return $this->render('payByCard',[
             'course' => $courses,
-            'model' => $model
+            'invoice' => $invoice,
+            'frame_url'=>$frame_url
         ]);
     }
 
@@ -188,6 +202,7 @@ class CourseController extends Controller
     public function actionGetPurchaseHistory()
     {
         $orders = Order::findAll(['user_id' => Yii::$app->user->getId()]);
+        $balanceEnroll = BalanceEnroll::findAll(['user_id' => Yii::$app->user->getId()]);
         $course_id = [];
 
         foreach($orders as $i => $order) {
@@ -202,13 +217,13 @@ class CourseController extends Controller
 
         return $this->render('purchaseHistory', [
             'orders' => $orders,
-            'coursesName' => $coursesName
+            'coursesName' => $coursesName,
+            'balanceEnroll' => $balanceEnroll
         ]);
     }
 
     public function actionContinueCourse(int $id)
     {
-
         $orders = Order::findAll(['user_id' => Yii::$app->user->getId(), 'course_id' => $id]);
         $ordersId = ArrayHelper::getColumn($orders,'course_id');
 

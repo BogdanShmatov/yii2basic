@@ -20,45 +20,16 @@ use yii\helpers\Url;
                         ],
                     ]); ?>
                     <div class="course-1-content pb-4">
-                        <h2>Введите данные карты:</h2>
+                        <h2>Введите данные:</h2>
                         <div class="row">
                             <div class="col-md-12 form-group">
                                 <?= $form->field($model, 'sum')
                                     ->textInput(['autofocus' => true])
                                     ->label('Сколько закинуть') ?>
                             </div>
-                            <div class="col-md-12 form-group">
-                                <?= $form->field($model, 'cardNumber')
-                                    ->textInput(['maxlength' => 16, 'placeholder'=>'**** **** **** ****','autofocus' => true])
-                                    ->label('Номер карты') ?>
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12 d-flex ">
-                                <div class="col-2">
-                                    <?= $form->field($model, 'expMonth')
-                                        ->textInput(['maxlength' => 2, 'placeholder'=>'**','autofocus' => true])
-                                        ->label('MM') ?>
-                                </div>
-                                <span style="font-size: 30px;padding: 0 5px 0 0;color: rgb(78, 73, 73)">/</span>
-                                <div class="col-2">
-                                    <?= $form->field($model, 'expYear')
-                                        ->textInput(['maxlength' => 2, 'placeholder'=>'**','autofocus' => true])
-                                        ->label('YY') ?>
-                                </div>
-                                <div class="col-2">
-                                    <?= $form->field($model, 'cvc')
-                                        ->passwordInput(['maxlength' => 3, 'placeholder'=>'***','autofocus' => true])
-                                        ->label('CVC') ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 form-group">
-                                <?= $form->field($model, 'cardName')
-                                    ->textInput(['placeholder'=>'BOGDAN SHMATOV','autofocus' => true])->label('') ?>
-                            </div>
-                        </div>
+
+
                         <div class="row">
                             <div class="col-12">
                                 <?= Html::submitButton('Пополнить', ['class' => 'btn btn-primary btn-lg px-5', 'name' => 'pay-button']) ?>
@@ -74,7 +45,7 @@ use yii\helpers\Url;
                         <h2>Сведения о балансе:</h2>
                         <div class="row">
                             <div class="col-6"><p>На счету:</p></div>
-                            <div class="col-6"><p>$<?php echo $user->balance ?></p></div>
+                            <div class="col-6"><p><?php echo $user ?>KZT</p></div>
                         </div>
                     </div>
                 </div>

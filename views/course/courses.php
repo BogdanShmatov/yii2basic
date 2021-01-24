@@ -34,8 +34,8 @@ $this->title = 'Courses';
                                         <?php }?>
 
                                         <img src="<?php echo $course['course_img_url']?>" alt="Image" class="img-fluid"></a>
-                                    <div class="price">$
-                                        <?php if($course['course_isFree']){ ?> Free <?php } else echo $course['course_price']?></div>
+                                    <div class="price">
+                                        <?php if($course['course_isFree']){ ?> Free <?php } else echo $course['course_price']?>KZT</div>
                                     <div class="category">
 
                                         <h3>  <?php if (in_array($course['id'], $courseUser)) {?>

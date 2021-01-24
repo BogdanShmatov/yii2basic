@@ -16,9 +16,9 @@ use yii\helpers\Url;
                     <div class="course-1-content pb-4 " style="text-align: left">
                         <div class="row">
                             <div class="col-6"><p>Доступная сумма на вашем счету:</p></div>
-                            <div class="col-6"><p>$<?php echo $user->balance ?></p></div>
+                            <div class="col-6"><p><?php echo $user->balance ?>KZT</p></div>
                             <div class="col-6"><p>Сумма списания</p></div>
-                            <div class="col-6"><p>$<?php echo $course['course_price']; ?></p></div>
+                            <div class="col-6"><p><?php echo $course['course_price']; ?>KZT</p></div>
                             <div class="col-6"><p>Информация о пользователе</p></div>
                             <div class="col-6"><p><?php echo $user->name.' '.$user->last_name ?></p></div>
                         </div>
@@ -51,7 +51,7 @@ use yii\helpers\Url;
                         <h2>Сведения о покупке:</h2>
                         <div class="row">
                             <div class="col-6"><p>Итоговая цена</p></div>
-                            <div class="col-6"><p>$<?php echo $course['course_price']?></p></div>
+                            <div class="col-6"><p><?php echo $course['course_price']?>KZT</p></div>
                             <div class="col-6"><p>Курс</p></div>
                             <div class="col-6"><p><?php echo $course['course_name']?></p></div>
                             <div class="col-6"><p>Автор курса</p></div>

@@ -48,6 +48,7 @@ $courseId = $courseSingle['id'];
 
 
 <?php
+$this->registerJsFile('/js/videohide.js');
 $js = <<< JS
 let course_id = $courseId;
 let checkboxes = document.querySelectorAll('#checkbox');

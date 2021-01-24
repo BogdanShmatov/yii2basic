@@ -12,6 +12,9 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $course_id
  * @property int|null $user_id
  * @property int $order_total_price
+ * @property int $invoice_id
+ * @property int $operation_id
+ * @property string $key
  * @property string $order_status
  *
  * @property CourseUser[] $courseUsers
@@ -33,9 +36,9 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'user_id', 'order_total_price'], 'integer'],
+            [['course_id', 'user_id', 'order_total_price', 'invoice_id', 'operation_id'], 'integer'],
             [['order_total_price', 'order_status'], 'required'],
-            [['order_status'], 'string', 'max' => 255],
+            [['order_status', 'key'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }

@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $form->field($model, 'course_img_url')->textInput(['value'=> $course['course_img_url']])->label('Картнка') ?>
     <?= $form->field($model, 'course_video_url')->textInput(['value'=> $course['course_video_url']])->label('Ссылка на Первый Урок') ?>
     <?= $form->field($model, 'course_description')->textarea(['value'=> $course['course_description']])->label('Описание') ?>
-    <?= $form->field($model, 'course_price')->textInput(['value'=> $course['course_price']])->label('Цена') ?>
+    <?= $form->field($model, 'course_price')->textInput(['value'=> $course['course_price']])->label('Цена KZT') ?>
     <?= $form->field($model, 'course_preview')->textInput(['value'=> $course['course_preview']])->label('Ссылка на video preview') ?>
 
     <?= $form->field($model, 'course_isFree')->checkbox() ?>

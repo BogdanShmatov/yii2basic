@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </tr>
             <tr>
                 <th>Course price</th>
-                <td><?php echo $course['course_price'] ?></td>
+                <td><?php echo $course['course_price'].' KZT' ?></td>
             </tr>
             <tr>
                 <th>Course is free</th>

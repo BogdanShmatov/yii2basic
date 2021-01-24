@@ -165,4 +165,6 @@ echo ListView::widget([
         'maxButtonCount' => 5,
     ],
 ]);
+
+$this->registerJsFile('/js/videohide.js');
 ?>
