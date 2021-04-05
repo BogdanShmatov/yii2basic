@@ -203,12 +203,7 @@ class CourseController extends Controller
     {
         $orders = Order::findAll(['user_id' => Yii::$app->user->getId()]);
         $balanceEnroll = BalanceEnroll::findAll(['user_id' => Yii::$app->user->getId()]);
-        $course_id = [];
-
-        foreach($orders as $i => $order) {
-            $course_id[$i] = $order['course_id'];
-        }
-
+        $course_id = ArrayHelper::getColumn($orders,'course_id');;
         $coursesName = [];
 
         foreach ($course_id as $i => $id) {

@@ -149,7 +149,7 @@ class SiteController extends Controller
 
     public function actionLogout()
     {
-        if(! Yii::$app->user->isGuest){
+        if(!Yii::$app->user->isGuest){
             Yii::$app->user->logout();
             return $this->redirect(['login']);
         }
@@ -250,10 +250,10 @@ class SiteController extends Controller
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', 'Проверьте свою электронную почту для получения дальнейших инструкций.');
                 return $this->goHome();
+            } else {
+                Yii::$app->session->setFlash('error', 'К сожалению, мы не можем повторно отправить письмо с подтверждением на указанный адрес электронной почты.');
             }
-            Yii::$app->session->setFlash('error', 'К сожалению, мы не можем повторно отправить письмо с подтверждением на указанный адрес электронной почты.');
         }
-
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
