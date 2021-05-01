@@ -242,19 +242,12 @@ class CourseController extends Controller
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            $data = Yii::$app->request->post();
-//Отправляю данные не с формы, модель не заполняется....
-            //hidden inputs ACTIVEFORM!
-            if ($data) {
-                $model->course_id = $data['course_id'];
-                $model->lesson_id = $data['lesson_id'];
-                $model->user_id = Yii::$app->user->getId();
-
+            $model->setAttributes(Yii::$app->request->post());
+            $model->user_id = Yii::$app->user->getId();
                 if ($model->save() && $model->validate()) {
                     return 'Сохранено!';
                 }
             }
-        }
     }
 
     public function  actionDeleteProgress(int $id)
