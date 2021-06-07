@@ -96,7 +96,8 @@ $categories = $this->params['categories'];
                                         <img src="https://whatsism.com/uploads/posts/2018-07/1530546770_rmk_vdjbx10.jpg" class="img-circle avatar" style="width: 50px; height: 50px; border-radius: 50px" alt="user name"/>
                                         <?php echo Yii::$app->user->identity->username ?></a>
                                     <ul class="dropdown">
-                                            <li><a href="<?= Url::toRoute(['profile/edit-profile']);?>">Редактировать профиль</a></li>
+                                        <li><a href="http://127.0.0.1:8000" target="blank">ROOM bro</a></li>
+                                        <li><a href="<?= Url::toRoute(['profile/edit-profile']);?>">Редактировать профиль</a></li>
                                             <li><a href="<?= Url::toRoute(['profile/view-balance']);?>">Баланс</a></li>
                                             <li><a href="<?= Url::toRoute(['profile/view-my-cards']);?>">Мои карты</a></li>
                                     </ul>
